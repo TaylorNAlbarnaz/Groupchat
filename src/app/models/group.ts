@@ -5,7 +5,7 @@ export class Group {
     Id?: number;
     Name = "";
     Password?: string;
-    AdminId: User | null = null;
+    Admin: User | null = null;
 
     Participants: User[] = [];
     Messages: Message[] = [];

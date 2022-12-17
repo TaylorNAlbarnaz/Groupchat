@@ -1,1 +1,41 @@
 <router-outlet></router-outlet>
+
+Users:
+<table>
+  <thead>
+    <th>UserId</th>
+    <th>Username</th>
+    <th>Password</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.Id }}</td>
+      <td>{{ user.Username }}</td>
+      <td>{{ user.Password }}</td>
+    </tr>
+  </tbody>
+</table>
+
+Groups:
+<table>
+  <thead>
+    <th>GroupId</th>
+    <th>Name</th>
+    <th>Password</th>
+    <th>Admin</th>
+    <th>Participants</th>
+    <th>Messages</th>
+  </thead>
+  <tr *ngFor="let group of groups">
+    <td>{{ group.Id }}</td>
+    <td>{{ group.Name }}</td>
+    <td>{{ group.Password }}</td>
+    <td>{{ group.Admin?.Username }}</td>
+    <td>
+      <span *ngFor="let participant of group.Participants">{{ participant.Username }}, </span>
+    </td>
+    <td>
+      <span *ngFor="let message of group.Messages">{{ message.Content }}, </span>
+    </td>
+  </tr>
+</table>

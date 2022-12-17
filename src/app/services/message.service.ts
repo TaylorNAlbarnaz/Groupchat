@@ -11,12 +11,14 @@ export class MessageService {
 
   public getMessages(users: User[]): Message[] {
     let message1 = new Message();
+    message1.Id = 1;
     message1.Owner = users[0];
-    message1.Content = "Conteúdo da Mensagem 1";
+    message1.Content = "Mensagem 1";
 
     let message2 = new Message();
+    message2.Id = 2;
     message2.Owner = users[0];
-    message2.Content = "Conteúdo da Mensagem 2";
+    message2.Content = "Mensagem 2";
 
     return [message1, message2];
   }
