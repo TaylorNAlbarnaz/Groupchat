@@ -7,6 +7,6 @@ export class Group {
     password?: string;
     admin: User | null = null;
 
-    participants: User[] = [];
+    users: User[] = [];
     messages: Message[] = [];
 }

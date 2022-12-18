@@ -32,7 +32,7 @@ Groups:
     <td>{{ group.password }}</td>
     <td>{{ group.admin?.username }}</td>
     <td>
-      <span *ngFor="let participant of group.participants">{{ participant.username }}, </span>
+      <span *ngFor="let user of group.users">{{ user.username }}, </span>
     </td>
     <td>
       <span *ngFor="let message of group.messages">{{ message.content }}, </span>
