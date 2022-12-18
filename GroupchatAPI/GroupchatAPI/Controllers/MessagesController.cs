@@ -17,7 +17,7 @@ namespace GroupchatAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Message>>> GetMessages(int id)
+        public async Task<ActionResult<List<Message>>> GetMessage(int id)
         {
             var dbMessage = await context.Messages.Include(m => m.Owner)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -27,6 +27,13 @@ namespace GroupchatAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<List<Message>>> CreateMessage(MessageDto messageDto)
         {
+            var dbMessage = await context.Users.FindAsync(messageDto.Id);
+            if (dbMessage != null)
+                return BadRequest("This MessageId already exists!");
+
+            if (messageDto.Id <= 0)
+                return BadRequest("Invalid Message Index!");
+
             var dbOwner = await context.Users.FindAsync(messageDto.OwnerId);
             if (dbOwner == null)
                 return NotFound("Message's Owner not found!");

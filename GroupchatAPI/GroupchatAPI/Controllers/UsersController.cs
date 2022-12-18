@@ -22,17 +22,34 @@ namespace GroupchatAPI.Controllers
             return Ok(await context.Users.ToListAsync());
         }
 
-        [HttpPost]
-        public async Task<ActionResult<List<User>>> CreateUser(User user)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUser(int id)
         {
+            var dbUser = await context.Users.FindAsync(id);
+            if (dbUser == null)
+                return BadRequest("User not found!");
+
+            return Ok(dbUser);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<User>> CreateUser(User user)
+        {
+            var dbUser = await context.Users.FindAsync(user.Id);
+            if (dbUser != null)
+                return BadRequest("This UserId already exists!");
+
+            if (user.Id < 0)
+                return BadRequest("Invalid User Index!");
+
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            return Ok(await context.Users.ToListAsync());
+            return Ok(user);
         }
 
         [HttpPut]
-        public async Task<ActionResult<List<User>>> UpdateUser(User user)
+        public async Task<ActionResult<User>> UpdateUser(User user)
         {
             var dbUser = await context.Users.FindAsync(user.Id);
             if (dbUser == null)
@@ -44,7 +61,7 @@ namespace GroupchatAPI.Controllers
 
             await context.SaveChangesAsync();
 
-            return Ok(await context.Users.ToListAsync());
+            return Ok(dbUser);
         }
 
         [HttpDelete("{id}")]

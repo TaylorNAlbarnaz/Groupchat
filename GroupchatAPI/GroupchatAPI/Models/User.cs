@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GroupchatAPI.Models
 {
@@ -6,6 +7,7 @@ namespace GroupchatAPI.Models
     {
         [Key]
         public int Id { get; set; }
+
         public string Username { get; set; } = String.Empty;
         public string Password { get; set; } = String.Empty;
     }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace GroupchatAPI.Models
@@ -7,6 +8,7 @@ namespace GroupchatAPI.Models
     {
         [Key]
         public int Id { get; set; }
+
         public User Owner { get; set; }
         public string Content { get; set; } = String.Empty;
     }
