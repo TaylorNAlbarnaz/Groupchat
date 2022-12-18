@@ -2,11 +2,11 @@ import { Message } from "./message";
 import { User } from "./user";
 
 export class Group {
-    Id?: number;
-    Name = "";
-    Password?: string;
-    Admin: User | null = null;
+    id?: number;
+    name = "";
+    password?: string;
+    admin: User | null = null;
 
-    Participants: User[] = [];
-    Messages: Message[] = [];
+    participants: User[] = [];
+    messages: Message[] = [];
 }

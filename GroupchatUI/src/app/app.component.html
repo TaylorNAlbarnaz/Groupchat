@@ -9,9 +9,9 @@ Users:
   </thead>
   <tbody>
     <tr *ngFor="let user of users">
-      <td>{{ user.Id }}</td>
-      <td>{{ user.Username }}</td>
-      <td>{{ user.Password }}</td>
+      <td>{{ user.id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.password }}</td>
     </tr>
   </tbody>
 </table>
@@ -27,15 +27,15 @@ Groups:
     <th>Messages</th>
   </thead>
   <tr *ngFor="let group of groups">
-    <td>{{ group.Id }}</td>
-    <td>{{ group.Name }}</td>
-    <td>{{ group.Password }}</td>
-    <td>{{ group.Admin?.Username }}</td>
+    <td>{{ group.id }}</td>
+    <td>{{ group.name }}</td>
+    <td>{{ group.password }}</td>
+    <td>{{ group.admin?.username }}</td>
     <td>
-      <span *ngFor="let participant of group.Participants">{{ participant.Username }}, </span>
+      <span *ngFor="let participant of group.participants">{{ participant.username }}, </span>
     </td>
     <td>
-      <span *ngFor="let message of group.Messages">{{ message.Content }}, </span>
+      <span *ngFor="let message of group.messages">{{ message.content }}, </span>
     </td>
   </tr>
 </table>

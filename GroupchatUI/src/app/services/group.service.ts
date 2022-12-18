@@ -12,12 +12,12 @@ export class GroupService {
 
   public getGroups(users: User[], messages: Message[]): Group[] {
     let group1 = new Group();
-    group1.Id = 1;
-    group1.Name = "Grupo";
-    group1.Password = "123";
-    group1.Admin = users[0];
-    group1.Participants = [...users];
-    group1.Messages = [...messages];
+    group1.id = 1;
+    group1.name = "Grupo";
+    group1.password = "123";
+    group1.admin = users[0];
+    group1.participants = [...users];
+    group1.messages = [...messages];
 
     return [group1];
   }
