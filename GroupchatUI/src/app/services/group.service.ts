@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environment/environment';
 import { Group } from '../models/group';
 import { Message } from '../models/message';
 import { User } from '../models/user';
@@ -7,18 +10,11 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class GroupService {
+  private url = "Groups";
 
-  constructor() { }
-
-  public getGroups(users: User[], messages: Message[]): Group[] {
-    let group1 = new Group();
-    group1.id = 1;
-    group1.name = "Grupo";
-    group1.password = "123";
-    group1.admin = users[0];
-    group1.participants = [...users];
-    group1.messages = [...messages];
-
-    return [group1];
+  constructor(private http: HttpClient) { }
+  
+  public getGroups(): Observable<Group[]> {
+    return this.http.get<Group[]>(`${environment.apiUrl}/${this.url}`);
   }
 }

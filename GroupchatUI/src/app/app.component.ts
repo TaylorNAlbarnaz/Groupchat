@@ -22,7 +22,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe((result: User[]) => (this.users = result));
-    this.messages = this.messageService.getMessages(this.users);
-    this.groups = this.groupService.getGroups(this.users, this.messages);
+    this.messageService.getMessages().subscribe((result: Message[]) => (this.messages = result));
+    this.groupService.getGroups().subscribe((result: Group[]) => (this.groups = result));
   }
 }

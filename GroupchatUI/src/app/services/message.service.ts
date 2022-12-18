@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environment/environment';
 import { Message } from '../models/message';
 import { User } from '../models/user';
 
@@ -6,20 +9,11 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class MessageService {
+  private url = "Messages";
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  public getMessages(users: User[]): Message[] {
-    let message1 = new Message();
-    message1.id = 1;
-    message1.owner = users[0];
-    message1.content = "Mensagem 1";
-
-    let message2 = new Message();
-    message2.id = 2;
-    message2.owner = users[0];
-    message2.content = "Mensagem 2";
-
-    return [message1, message2];
+  public getMessages(): Observable<Message[]> {
+    return this.http.get<Message[]>(`${environment.apiUrl}/${this.url}`);
   }
 }
