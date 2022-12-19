@@ -19,7 +19,7 @@ namespace GroupchatAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Message>>> GetMessage(int id)
         {
-            var dbMessage = await context.Messages.Include(m => m.Owner)
+            var dbMessage = await context.Messages.Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             return Ok(dbMessage);
         }
@@ -31,22 +31,22 @@ namespace GroupchatAPI.Controllers
             if (dbMessage != null)
                 return BadRequest("This MessageId already exists!");
 
-            if (messageDto.Id <= 0)
+            if (messageDto.Id < 0)
                 return BadRequest("Invalid Message Index!");
 
-            var dbOwner = await context.Users.FindAsync(messageDto.OwnerId);
-            if (dbOwner == null)
-                return NotFound("Message's Owner not found!");
+            var dbUser = await context.Users.FindAsync(messageDto.UserId);
+            if (dbUser == null)
+                return NotFound("Message's User not found!");
 
             var message = new Message {
-                Owner = dbOwner,
+                User = dbUser,
                 Content = messageDto.Content
             };
 
             context.Messages.Add(message);
             await context.SaveChangesAsync();
 
-            return Ok(await context.Messages.ToListAsync());
+            return Ok($"Messaeg successfully created!"); ;
         }
 
         [HttpPut]
@@ -56,17 +56,12 @@ namespace GroupchatAPI.Controllers
             if (dbMessage == null)
                 return BadRequest("Message not found!");
 
-            var dbOwner = await context.Users.FindAsync(messageDto.OwnerId);
-            if (dbOwner == null)
-                return BadRequest("Messge's Owner not found!");
-
-            dbMessage.Id = (int)messageDto.Id;
-            dbMessage.Owner = dbOwner;
+            dbMessage.Id = messageDto.Id;
             dbMessage.Content = messageDto.Content;
 
             await context.SaveChangesAsync();
 
-            return Ok(await context.Messages.ToListAsync());
+            return Ok($"Messaeg successfully updated!");
         }
 
         [HttpDelete("{id}")]
@@ -79,7 +74,7 @@ namespace GroupchatAPI.Controllers
             context.Messages.Remove(dbMessage);
             await context.SaveChangesAsync();
 
-            return Ok(await context.Messages.ToListAsync());
+            return Ok($"Messaeg successfully deleted!"); ;
         }
     }
 }

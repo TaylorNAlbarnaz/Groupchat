@@ -15,15 +15,21 @@ namespace GroupchatAPI.Controllers
             this.context = context;
         }
 
-        private async Task<List<User>> CreateUserList(int[] userIds)
+        private async Task<List<GroupUser>> CreateUserList(int[] userIds, Group group)
         {
-            var userList = new List<User>();
+            var userList = new List<GroupUser>();
 
             foreach (var userId in userIds)
             {
                 var dbUser = await context.Users.FindAsync(userId);
                 if (dbUser != null)
-                    userList.Add(dbUser);
+                    userList.Add(new GroupUser
+                    {
+                        User = dbUser,
+                        UserId = dbUser.Id,
+                        Group = group,
+                        GroupId = group.Id
+                    });
             }
 
             return userList;
@@ -47,12 +53,13 @@ namespace GroupchatAPI.Controllers
         public async Task<ActionResult<List<Group>>> GetGroups()
         {
             return Ok(await context.Groups
-                .Include(m => m.Users)
-                .Include(m => m.Messages).ToListAsync());
+                .Include(g => g.GroupUsers)
+                .Include(g => g.Admin)
+                .Include(g => g.Messages).ToListAsync());
         }
 
         [HttpPost]
-        public async Task<ActionResult<Group>> CreateGroup(GroupDto groupDto)
+        public async Task<ActionResult<Group>> CreateGroup(CreateGroupDto groupDto)
         {
             var dbGroup = await context.Users.FindAsync(groupDto.Id);
             if (dbGroup != null)
@@ -65,28 +72,30 @@ namespace GroupchatAPI.Controllers
             if (dbAdmin == null)
                 return NotFound("Admin not found!");
 
-            var userList = await CreateUserList(groupDto.UserIds);
-            if (userList.Count == 0)
-                return BadRequest("Invalid Userlist");
-
             var messageList = await CreateMessageList(groupDto.MessageIds);
 
             var group = new Group
             {
+                AdminId = dbAdmin.Id,
                 Admin = dbAdmin,
                 Name = groupDto.Name,
-                Users = userList,
                 Messages = messageList
             };
+
+            var userList = await CreateUserList(groupDto.UserIds, group);
+            if (userList.Count == 0)
+                return BadRequest("Invalid Userlist");
+
+            group.GroupUsers = userList;
 
             context.Groups.Add(group);
             await context.SaveChangesAsync();
 
-            return Ok(group);
+            return Ok($"Group {group.Name} of Id {group.Id} succesfully created!");
         }
 
         [HttpPut]
-        public async Task<ActionResult<List<Group>>> UpdateGroup(GroupDto groupDto)
+        public async Task<ActionResult<List<Group>>> UpdateGroup(UpdateGroupDto groupDto)
         {
             var dbGroup = await context.Groups.FindAsync(groupDto.Id);
             if (dbGroup == null)
@@ -96,17 +105,13 @@ namespace GroupchatAPI.Controllers
             if (dbAdmin == null)
                 return NotFound("Admin not found!");
 
-            var userList = await CreateUserList(groupDto.UserIds);
-            var messageList = await CreateMessageList(groupDto.MessageIds);
-
             dbGroup.Name = groupDto.Name;
+            dbGroup.AdminId = dbAdmin.Id;
             dbGroup.Admin = dbAdmin;
-            dbGroup.Users = userList;
-            dbGroup.Messages = messageList;
 
             await context.SaveChangesAsync();
 
-            return Ok(await context.Groups.ToListAsync());
+            return Ok($"Group {dbGroup.Name} succesfully updated!");
         }
 
         [HttpDelete("{id}")]
@@ -116,11 +121,17 @@ namespace GroupchatAPI.Controllers
             if (dbGroup == null)
                 return BadRequest("Group not found!");
 
+            var dbMessages = context.Messages.Where(m => m.GroupId == id);
+            foreach (var dbMessage in dbMessages)
+            {
+                context.Messages.Remove(dbMessage);
+            }
+
             context.Groups.Remove(dbGroup);
 
             await context.SaveChangesAsync();
 
-            return Ok(await context.Groups.ToListAsync());
+            return Ok($"Group of Id {id} succesfully deleted!");
         }
     }
 }

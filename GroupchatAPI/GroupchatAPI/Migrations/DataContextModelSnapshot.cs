@@ -39,9 +39,46 @@ namespace GroupchatAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdminId");
+                    b.HasIndex("AdminId")
+                        .IsUnique();
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("GroupchatAPI.Models.GroupUser", b =>
+                {
+                    b.Property<int>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("GroupUsers");
+                });
+
+            modelBuilder.Entity("GroupchatAPI.Models.Login", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logins");
                 });
 
             modelBuilder.Entity("GroupchatAPI.Models.Message", b =>
@@ -59,14 +96,14 @@ namespace GroupchatAPI.Migrations
                     b.Property<int?>("GroupId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OwnerId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -79,12 +116,8 @@ namespace GroupchatAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("GroupId")
+                    b.Property<int>("LoginId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -92,7 +125,8 @@ namespace GroupchatAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("LoginId")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -100,41 +134,78 @@ namespace GroupchatAPI.Migrations
             modelBuilder.Entity("GroupchatAPI.Models.Group", b =>
                 {
                     b.HasOne("GroupchatAPI.Models.User", "Admin")
-                        .WithMany()
-                        .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("GroupchatAPI.Models.Group", "AdminId")
+                        .OnDelete(DeleteBehavior.ClientNoAction)
                         .IsRequired();
 
                     b.Navigation("Admin");
                 });
 
-            modelBuilder.Entity("GroupchatAPI.Models.Message", b =>
+            modelBuilder.Entity("GroupchatAPI.Models.GroupUser", b =>
                 {
-                    b.HasOne("GroupchatAPI.Models.Group", null)
-                        .WithMany("Messages")
-                        .HasForeignKey("GroupId");
-
-                    b.HasOne("GroupchatAPI.Models.User", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
+                    b.HasOne("GroupchatAPI.Models.Group", "Group")
+                        .WithMany("GroupUsers")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Owner");
+                    b.HasOne("GroupchatAPI.Models.User", "User")
+                        .WithMany("GroupUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GroupchatAPI.Models.Message", b =>
+                {
+                    b.HasOne("GroupchatAPI.Models.Group", "Group")
+                        .WithMany("Messages")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
+
+                    b.HasOne("GroupchatAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("GroupchatAPI.Models.User", b =>
                 {
-                    b.HasOne("GroupchatAPI.Models.Group", null)
-                        .WithMany("Users")
-                        .HasForeignKey("GroupId");
+                    b.HasOne("GroupchatAPI.Models.Login", "Login")
+                        .WithOne("User")
+                        .HasForeignKey("GroupchatAPI.Models.User", "LoginId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Login");
                 });
 
             modelBuilder.Entity("GroupchatAPI.Models.Group", b =>
                 {
-                    b.Navigation("Messages");
+                    b.Navigation("GroupUsers");
 
-                    b.Navigation("Users");
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("GroupchatAPI.Models.Login", b =>
+                {
+                    b.Navigation("User")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GroupchatAPI.Models.User", b =>
+                {
+                    b.Navigation("GroupUsers");
                 });
 #pragma warning restore 612, 618
         }

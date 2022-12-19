@@ -9,6 +9,8 @@ namespace GroupchatAPI.Models
         public int Id { get; set; }
 
         public string Username { get; set; } = String.Empty;
-        public string Password { get; set; } = String.Empty;
+        public Login Login { get; set; }
+        public int LoginId { get; set; }
+        public virtual ICollection<GroupUser> GroupUsers { get; set; }
     }
 }

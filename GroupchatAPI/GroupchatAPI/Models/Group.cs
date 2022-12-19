@@ -13,9 +13,10 @@ namespace GroupchatAPI.Models
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        public User? Admin { get; set; }
+        public int AdminId { get; set; }
+        public User Admin { get; set; }
 
-        public ICollection<User>? Users { get; set; }
+        public virtual ICollection<GroupUser> GroupUsers { get; set; }
         public ICollection<Message> Messages { get; set; } = new List<Message>();
     }
 }
