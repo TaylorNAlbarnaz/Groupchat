@@ -52,10 +52,22 @@ namespace GroupchatAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Group>>> GetGroups()
         {
-            return Ok(await context.Groups
+            return Ok(await context.Groups.ToListAsync());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<Group>>> GetGroup(int id)
+        {
+            var dbGroup = context.Groups
                 .Include(g => g.GroupUsers)
                 .Include(g => g.Admin)
-                .Include(g => g.Messages).ToListAsync());
+                .Include(g => g.Messages)
+                .FirstOrDefault(g => g.Id == id);
+
+            if (dbGroup == null)
+                return NotFound("Group not found!");
+
+            return Ok(dbGroup);
         }
 
         [HttpPost]

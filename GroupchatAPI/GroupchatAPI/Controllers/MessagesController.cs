@@ -46,7 +46,7 @@ namespace GroupchatAPI.Controllers
             context.Messages.Add(message);
             await context.SaveChangesAsync();
 
-            return Ok($"Messaeg successfully created!"); ;
+            return Ok($"Message successfully created!"); ;
         }
 
         [HttpPut]
@@ -54,27 +54,14 @@ namespace GroupchatAPI.Controllers
         {
             var dbMessage = await context.Messages.FindAsync(messageDto.Id);
             if (dbMessage == null)
-                return BadRequest("Message not found!");
+                return NotFound("Message not found!");
 
             dbMessage.Id = messageDto.Id;
             dbMessage.Content = messageDto.Content;
 
             await context.SaveChangesAsync();
 
-            return Ok($"Messaeg successfully updated!");
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<List<Message>>> DeleteMessage(int id)
-        {
-            var dbMessage = await context.Messages.FindAsync(id);
-            if (dbMessage == null)
-                return BadRequest("Message not found!");
-
-            context.Messages.Remove(dbMessage);
-            await context.SaveChangesAsync();
-
-            return Ok($"Messaeg successfully deleted!"); ;
+            return Ok($"Message successfully updated!");
         }
     }
 }

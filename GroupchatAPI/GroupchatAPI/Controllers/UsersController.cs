@@ -27,7 +27,7 @@ namespace GroupchatAPI.Controllers
         {
             var dbUser = await context.Users.FindAsync(id);
             if (dbUser == null)
-                return BadRequest("User not found!");
+                return NotFound("User not found!");
 
             return Ok(dbUser);
         }
@@ -66,7 +66,7 @@ namespace GroupchatAPI.Controllers
         {
             var dbUser = await context.Users.FindAsync(userDto.Id);
             if (dbUser == null)
-                return BadRequest("User not found!");
+                return NotFound("User not found!");
 
             dbUser.Id = userDto.Id;
             dbUser.Username = userDto.Username;
@@ -85,7 +85,7 @@ namespace GroupchatAPI.Controllers
         {
             var dbUser = await context.Users.FindAsync(id);
             if (dbUser == null)
-                return BadRequest("User not found!");
+                return NotFound("User not found!");
 
             var tempName = dbUser.Username;
 
