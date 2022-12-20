@@ -17,7 +17,7 @@ namespace GroupchatAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Message>>> GetMessage(int id)
+        public async Task<ActionResult<Message>> GetMessage(int id)
         {
             var dbMessage = await context.Messages.Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -25,7 +25,7 @@ namespace GroupchatAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<Message>>> CreateMessage(MessageDto messageDto)
+        public async Task<ActionResult> CreateMessage(MessageDto messageDto)
         {
             var dbMessage = await context.Users.FindAsync(messageDto.Id);
             if (dbMessage != null)
@@ -50,7 +50,7 @@ namespace GroupchatAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<List<Message>>> UpdateMessage(MessageDto messageDto)
+        public async Task<ActionResult> UpdateMessage(MessageDto messageDto)
         {
             var dbMessage = await context.Messages.FindAsync(messageDto.Id);
             if (dbMessage == null)

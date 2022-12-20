@@ -27,9 +27,8 @@ namespace GroupchatAPI.Models
             modelBuilder
                 .Entity<Group>()
                 .HasOne(g => g.Admin)
-                .WithOne()
-                .OnDelete(DeleteBehavior.ClientNoAction)
-                .HasForeignKey<Group>(g => g.AdminId);
+                .WithMany(u => u.Groups)
+                .OnDelete(DeleteBehavior.ClientNoAction);
 
             // Sets a one-to-one relationship between a User and it's login
             modelBuilder

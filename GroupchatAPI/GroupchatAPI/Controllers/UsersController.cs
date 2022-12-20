@@ -81,7 +81,7 @@ namespace GroupchatAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<User>>> DeleteUser(int id)
+        public async Task<ActionResult<User>> DeleteUser(int id)
         {
             var dbUser = await context.Users.FindAsync(id);
             if (dbUser == null)

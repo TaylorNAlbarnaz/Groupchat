@@ -39,8 +39,7 @@ namespace GroupchatAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdminId")
-                        .IsUnique();
+                    b.HasIndex("AdminId");
 
                     b.ToTable("Groups");
                 });
@@ -134,8 +133,8 @@ namespace GroupchatAPI.Migrations
             modelBuilder.Entity("GroupchatAPI.Models.Group", b =>
                 {
                     b.HasOne("GroupchatAPI.Models.User", "Admin")
-                        .WithOne()
-                        .HasForeignKey("GroupchatAPI.Models.Group", "AdminId")
+                        .WithMany("Groups")
+                        .HasForeignKey("AdminId")
                         .OnDelete(DeleteBehavior.ClientNoAction)
                         .IsRequired();
 
@@ -206,6 +205,8 @@ namespace GroupchatAPI.Migrations
             modelBuilder.Entity("GroupchatAPI.Models.User", b =>
                 {
                     b.Navigation("GroupUsers");
+
+                    b.Navigation("Groups");
                 });
 #pragma warning restore 612, 618
         }
