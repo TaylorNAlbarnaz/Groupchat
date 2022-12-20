@@ -1,5 +1,6 @@
 ﻿using GroupchatAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,16 +20,18 @@ namespace GroupchatAPI.Controllers.Groups
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetGroupUsers(int id)
         {
-            var dbGroup = await context.Groups.FindAsync(id);
+            var dbGroup = context.Groups
+                .Include(g => g.GroupUsers)
+                .FirstOrDefault(g => g.Id == id);
+
             if (dbGroup == null)
                 return NotFound("Group not found!");
 
-            var dbGroupUsers = dbGroup.GroupUsers.ToList();
             var dbUsers = new List<User>();
 
-            foreach (var user in dbGroupUsers)
+            foreach (var groupUser in dbGroup.GroupUsers)
             {
-                var dbUser = await context.Users.FindAsync(user.UserId);
+                var dbUser = context.Users.Find(groupUser.UserId);
                 if (dbUser != null)
                     dbUsers.Add(dbUser);
             }
