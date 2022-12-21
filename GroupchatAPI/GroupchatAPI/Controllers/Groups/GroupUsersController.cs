@@ -78,5 +78,63 @@ namespace GroupchatAPI.Controllers.Groups
 
             return Ok($"User of id {userId} succesfully added to Group of id {id}");
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> RemoveUserFromGroup(int id, int userId)
+        {
+            var dbGroup = context.Groups
+                .Include(g => g.GroupUsers)
+                .Include(g => g.Admin)
+                .FirstOrDefault(g => g.Id == id);
+            if (dbGroup == null)
+                return NotFound("Group not found!");
+
+            var dbUser = context.Users
+                .Include(u => u.Groups)
+                .Include(u => u.GroupUsers)
+                .FirstOrDefault(u => u.Id == userId);
+            if (dbUser == null)
+                return NotFound("User not found!");
+
+            var dbGroupUser = context.GroupUsers
+                .FirstOrDefault(gu => (gu.GroupId == id && gu.UserId == userId));
+
+            if (dbGroupUser == null)
+                return BadRequest("User is not in that group!");
+
+            var isAdmin = (dbGroup.Admin == dbUser);
+            
+            dbGroup.GroupUsers.Remove(dbGroupUser);
+            dbUser.GroupUsers.Remove(dbGroupUser);
+            context.GroupUsers.Remove(dbGroupUser);
+
+            if (isAdmin)
+            {
+                dbUser.Groups.Remove(dbGroup);
+
+                if (dbGroup.GroupUsers.Count > 0)
+                {
+                    var dbNewAdmin = await context.Users
+                        .FindAsync(dbGroup.GroupUsers.First().UserId);
+
+                    if (dbNewAdmin == null)
+                        return NotFound("Admin not found!");
+                    dbGroup.Admin = dbNewAdmin;
+                } else
+                {
+                    var dbMessages = context.Messages.Where(m => m.GroupId == dbGroup.Id);
+                    foreach (var dbMessage in dbMessages)
+                    {
+                        context.Messages.Remove(dbMessage);
+                    }
+
+                    context.Groups.Remove(dbGroup);
+                }
+            }
+            
+            await context.SaveChangesAsync();
+
+            return Ok("User succesfully removed from group!");
+        }
     }
 }

@@ -28,14 +28,14 @@ namespace GroupchatAPI.Models
                 .Entity<Group>()
                 .HasOne(g => g.Admin)
                 .WithMany(u => u.Groups)
-                .OnDelete(DeleteBehavior.ClientNoAction);
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Sets a one-to-one relationship between a User and it's login
             modelBuilder
                 .Entity<User>()
                 .HasOne(u => u.Login)
                 .WithOne(l => l.User)
-                .OnDelete(DeleteBehavior.ClientCascade)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey<User>(u => u.LoginId);
 
             // Sets a one-to-many relationship between a group and it's messages
@@ -43,7 +43,7 @@ namespace GroupchatAPI.Models
                 .Entity<Message>()
                 .HasOne(m => m.Group)
                 .WithMany(g => g.Messages)
-                .OnDelete(DeleteBehavior.ClientCascade)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasForeignKey(m => m.GroupId);
 
             // Sets a one-to-many relationship between messages and it's authors
@@ -52,7 +52,7 @@ namespace GroupchatAPI.Models
                 .HasOne(m => m.User)
                 .WithMany()
                 .IsRequired()
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<User> Users => Set<User>();
