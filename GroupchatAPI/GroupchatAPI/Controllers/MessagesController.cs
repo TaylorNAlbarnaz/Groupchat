@@ -21,6 +21,10 @@ namespace GroupchatAPI.Controllers
         {
             var dbMessage = await context.Messages.Include(m => m.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (dbMessage == null)
+                return NotFound("Message not found!");
+
             return Ok(dbMessage);
         }
 
@@ -36,7 +40,10 @@ namespace GroupchatAPI.Controllers
 
             var dbUser = await context.Users.FindAsync(messageDto.UserId);
             if (dbUser == null)
-                return NotFound("Message's User not found!");
+                return NotFound("User not found!");
+
+            if (messageDto.Content == string.Empty)
+                return BadRequest("Message cannot be empty!");
 
             var message = new Message {
                 User = dbUser,

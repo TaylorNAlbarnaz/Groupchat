@@ -18,7 +18,7 @@ namespace GroupchatAPI.Controllers.Groups
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetGroupUsers(int id)
+        public async Task<ActionResult<List<User>>> GetGroupUsers(int id)
         {
             var dbGroup = context.Groups
                 .Include(g => g.GroupUsers)
@@ -37,6 +37,46 @@ namespace GroupchatAPI.Controllers.Groups
             }
 
             return Ok(dbUsers);
+        }
+
+        [HttpPost("{id}")]
+        public async Task<ActionResult> AddUserToGroup(int id, int userId)
+        {
+            var dbGroup = context.Groups
+                .Include(g => g.GroupUsers)
+                .Include(g => g.Admin)
+                .FirstOrDefault(g => g.Id == id);
+            if (dbGroup == null)
+                return NotFound("Group not found!");
+
+            var dbUser = context.Users
+                .Include(u => u.Login)
+                .Include(u => u.Groups)
+                .Include(u => u.GroupUsers)
+                .FirstOrDefault(u => u.Id == userId);
+            if (dbUser == null)
+                return NotFound("User not found!");
+
+            var dbUserInGroup = context.GroupUsers
+                .FirstOrDefault(gu => (gu.GroupId == id && gu.UserId == userId));
+
+            if (dbUserInGroup != null)
+                return BadRequest("User is already in that group!");
+
+            var dbGroupUser = new GroupUser
+            {
+                User = dbUser,
+                UserId = dbUser.Id,
+                Group = dbGroup,
+                GroupId = dbGroup.Id
+            };
+
+            dbGroup.GroupUsers.Add(dbGroupUser);
+            await context.SaveChangesAsync();
+
+            context.GroupUsers.Add(dbGroupUser);
+
+            return Ok($"User of id {userId} succesfully added to Group of id {id}");
         }
     }
 }
