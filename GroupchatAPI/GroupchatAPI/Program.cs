@@ -1,4 +1,5 @@
 using GroupchatAPI.Models;
+using GroupchatAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 
@@ -9,6 +10,8 @@ string path = Directory.GetCurrentDirectory();
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+
+builder.Services.AddScoped<IGroupsRepository, GroupsRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

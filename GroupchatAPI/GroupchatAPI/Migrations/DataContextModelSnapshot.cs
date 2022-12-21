@@ -92,6 +92,9 @@ namespace GroupchatAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("GroupId")
                         .HasColumnType("int");
 
@@ -135,7 +138,7 @@ namespace GroupchatAPI.Migrations
                     b.HasOne("GroupchatAPI.Models.User", "Admin")
                         .WithMany("Groups")
                         .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.ClientNoAction)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Admin");
@@ -165,12 +168,12 @@ namespace GroupchatAPI.Migrations
                     b.HasOne("GroupchatAPI.Models.Group", "Group")
                         .WithMany("Messages")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("GroupchatAPI.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Group");
@@ -183,7 +186,7 @@ namespace GroupchatAPI.Migrations
                     b.HasOne("GroupchatAPI.Models.Login", "Login")
                         .WithOne("User")
                         .HasForeignKey("GroupchatAPI.Models.User", "LoginId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Login");

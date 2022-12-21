@@ -1,4 +1,5 @@
 ﻿using GroupchatAPI.Models;
+using GroupchatAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,19 +12,18 @@ namespace GroupchatAPI.Controllers.Groups
     public class GroupUsersController : ControllerBase
     {
         private readonly DataContext context;
+        private readonly GroupsRepository repository;
 
         public GroupUsersController(DataContext context)
         {
             this.context = context;
+            this.repository = new GroupsRepository(context);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<User>>> GetGroupUsers(int id)
+        public ActionResult<List<User>> GetGroupUsers(int id)
         {
-            var dbGroup = context.Groups
-                .Include(g => g.GroupUsers)
-                .FirstOrDefault(g => g.Id == id);
-
+            var dbGroup = repository.GetGroupWithUsers(id);
             if (dbGroup == null)
                 return NotFound("Group not found!");
 
@@ -42,10 +42,7 @@ namespace GroupchatAPI.Controllers.Groups
         [HttpPost("{id}")]
         public async Task<ActionResult> AddUserToGroup(int id, int userId)
         {
-            var dbGroup = context.Groups
-                .Include(g => g.GroupUsers)
-                .Include(g => g.Admin)
-                .FirstOrDefault(g => g.Id == id);
+            var dbGroup = repository.GetGroupWithUsers(id);
             if (dbGroup == null)
                 return NotFound("Group not found!");
 
@@ -82,10 +79,7 @@ namespace GroupchatAPI.Controllers.Groups
         [HttpDelete("{id}")]
         public async Task<ActionResult> RemoveUserFromGroup(int id, int userId)
         {
-            var dbGroup = context.Groups
-                .Include(g => g.GroupUsers)
-                .Include(g => g.Admin)
-                .FirstOrDefault(g => g.Id == id);
+            var dbGroup = repository.GetGroupWithUsers(id);
             if (dbGroup == null)
                 return NotFound("Group not found!");
 
@@ -122,13 +116,7 @@ namespace GroupchatAPI.Controllers.Groups
                     dbGroup.Admin = dbNewAdmin;
                 } else
                 {
-                    var dbMessages = context.Messages.Where(m => m.GroupId == dbGroup.Id);
-                    foreach (var dbMessage in dbMessages)
-                    {
-                        context.Messages.Remove(dbMessage);
-                    }
-
-                    context.Groups.Remove(dbGroup);
+                    repository.DeleteGroup(dbGroup);
                 }
             }
             

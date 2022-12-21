@@ -1,4 +1,5 @@
 ﻿using GroupchatAPI.Models;
+using GroupchatAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,44 +10,12 @@ namespace GroupchatAPI.Controllers.Groups
     public class GroupsController : ControllerBase
     {
         private readonly DataContext context;
+        private readonly GroupsRepository repository;
 
         public GroupsController(DataContext context)
         {
             this.context = context;
-        }
-
-        private async Task<List<GroupUser>> CreateUserList(int[] userIds, Group group)
-        {
-            var userList = new List<GroupUser>();
-
-            foreach (var userId in userIds)
-            {
-                var dbUser = await context.Users.FindAsync(userId);
-                if (dbUser != null)
-                    userList.Add(new GroupUser
-                    {
-                        User = dbUser,
-                        UserId = dbUser.Id,
-                        Group = group,
-                        GroupId = group.Id
-                    });
-            }
-
-            return userList;
-        }
-
-        private async Task<List<Message>> CreateMessageList(int[] messageIds)
-        {
-            var messageList = new List<Message>();
-
-            foreach (var messageId in messageIds)
-            {
-                var dbMessage = await context.Messages.FindAsync(messageId);
-                if (dbMessage != null)
-                    messageList.Add(dbMessage);
-            }
-
-            return messageList;
+            this.repository = new GroupsRepository(context);
         }
 
         [HttpGet]
@@ -58,11 +27,7 @@ namespace GroupchatAPI.Controllers.Groups
         [HttpGet("{id}")]
         public async Task<ActionResult<Group>> GetGroup(int id)
         {
-            var dbGroup = context.Groups
-                .Include(g => g.GroupUsers)
-                .Include(g => g.Admin)
-                .Include(g => g.Messages)
-                .FirstOrDefault(g => g.Id == id);
+            var dbGroup = repository.GetGroupFull(id);
 
             if (dbGroup == null)
                 return NotFound("Group not found!");
@@ -80,11 +45,14 @@ namespace GroupchatAPI.Controllers.Groups
             if (groupDto.Id < 0)
                 return BadRequest("Invalid Group Index!");
 
+            if (!groupDto.UserIds.Contains(groupDto.AdminId))
+                return BadRequest("Admin has to be part of the group!");
+
             var dbAdmin = await context.Users.FindAsync(groupDto.AdminId);
             if (dbAdmin == null)
                 return NotFound("Admin not found!");
 
-            var messageList = await CreateMessageList(groupDto.MessageIds);
+            var messageList = await repository.CreateMessageList(groupDto.MessageIds);
 
             var group = new Group
             {
@@ -94,7 +62,7 @@ namespace GroupchatAPI.Controllers.Groups
                 Messages = messageList
             };
 
-            var userList = await CreateUserList(groupDto.UserIds, group);
+            var userList = await repository.CreateUserList(groupDto.UserIds, group);
             if (userList.Count == 0)
                 return BadRequest("Invalid Userlist");
 
@@ -133,14 +101,7 @@ namespace GroupchatAPI.Controllers.Groups
             if (dbGroup == null)
                 return BadRequest("Group not found!");
 
-            var dbMessages = context.Messages.Where(m => m.GroupId == id);
-            foreach (var dbMessage in dbMessages)
-            {
-                context.Messages.Remove(dbMessage);
-            }
-
-            context.Groups.Remove(dbGroup);
-
+            repository.DeleteGroup(dbGroup);
             await context.SaveChangesAsync();
 
             return Ok($"Group of Id {id} succesfully deleted!");
