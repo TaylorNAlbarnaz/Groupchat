@@ -69,6 +69,7 @@ namespace GroupchatAPI.Controllers.Groups
             };
 
             dbGroup.GroupUsers.Add(dbGroupUser);
+            dbUser.GroupUsers.Add(dbGroupUser);
             await context.SaveChangesAsync();
 
             context.GroupUsers.Add(dbGroupUser);
