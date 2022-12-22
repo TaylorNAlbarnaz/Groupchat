@@ -11,6 +11,7 @@ namespace GroupchatAPI.Models
         public string Username { get; set; } = String.Empty;
         public Login Login { get; set; }
         public int LoginId { get; set; }
+        public bool Disabled { get; set; } = false;
         public virtual ICollection<GroupUser> GroupUsers { get; set; }
 
         /// Groups the User is an Admin of

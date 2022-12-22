@@ -87,12 +87,10 @@ namespace GroupchatAPI.Controllers
             if (dbUser == null)
                 return NotFound("User not found!");
 
-            var tempName = dbUser.Username;
-
-            context.Users.Remove(dbUser);
+            dbUser.Disabled = true;
             await context.SaveChangesAsync();
 
-            return Ok(($"User {tempName} successfully deleted!"));
+            return Ok(($"User {dbUser.Username} successfully disabled!"));
         }
     }
 }
