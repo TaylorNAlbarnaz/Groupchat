@@ -18,16 +18,25 @@ namespace GroupchatAPI.Controllers.Groups
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Message>> GetGroupMessages(int id)
+        public async Task<ActionResult<Message>> GetGroupMessages(int id, int qnt, int offset)
         {
-            var dbGroup = context.Groups
-                .Include(g => g.Messages)
-                .FirstOrDefault(g => g.Id == id);
+            if (qnt == 0)
+                return BadRequest("Can't ask for 0 messages!");
 
-            if (dbGroup == null)
-                return NotFound("Group not found!");
+            var dbMessages = await context.Messages
+                .OrderByDescending(m => m.Id)
+                .Skip(offset)
+                .Take(qnt)
+                .Where(m => m.GroupId == id)
+                .ToListAsync();
 
-            return Ok(dbGroup.Messages);
+            if (dbMessages == null)
+                return NotFound("Group messages not found!");
+
+            if (dbMessages.Count == 0)
+                return NotFound("No more messages found!");
+
+            return Ok(dbMessages);
         }
 
         [HttpPost("{id}")]
