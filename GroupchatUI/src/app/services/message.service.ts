@@ -9,11 +9,11 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class MessageService {
-  private url = "Messages";
+  private url = "Group/Messages";
 
   constructor(private http: HttpClient) { }
 
-  public getMessages(): Observable<Message[]> {
-    return this.http.get<Message[]>(`${environment.apiUrl}/${this.url}`);
+  public getMessages(id: number): Observable<Message[]> {
+    return this.http.get<Message[]>(`${environment.apiUrl}/${this.url}/${id}`);
   }
 }

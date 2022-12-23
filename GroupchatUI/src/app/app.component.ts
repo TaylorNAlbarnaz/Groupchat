@@ -16,13 +16,29 @@ export class AppComponent {
   
   users: User[] = [];
   groups: Group[] = [];
-  messages: Message[] = [];
 
   constructor(private userService: UserService, private groupService: GroupService, private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.userService.getUsers().subscribe((result: User[]) => (this.users = result));
-    this.messageService.getMessages().subscribe((result: Message[]) => (this.messages = result));
-    this.groupService.getGroups().subscribe((result: Group[]) => (this.groups = result));
+    this.groupService.getGroups().subscribe((result: Group[]) => (this.groups = result, this.UpdateGroups()));
+  }
+
+  private UpdateGroups() {
+    for (let group of this.groups) {
+      this.groupService.getGroupById(group.id).subscribe((result: Group) => 
+      (
+        group.admin = result.admin,
+        group.groupUsers = result.groupUsers
+        ));
+    }
+
+    this.UpdateGroupMessages();
+  }
+
+  private UpdateGroupMessages() {
+    for (const group of this.groups) {
+      this.messageService.getMessages(group.id).subscribe((result: Message[]) => (group.messages = result));
+    }
   }
 }

@@ -21,7 +21,6 @@ Groups:
   <thead>
     <th>GroupId</th>
     <th>Name</th>
-    <th>Password</th>
     <th>Admin</th>
     <th>Participants</th>
     <th>Messages</th>
@@ -29,10 +28,9 @@ Groups:
   <tr *ngFor="let group of groups">
     <td>{{ group.id }}</td>
     <td>{{ group.name }}</td>
-    <td>{{ group.password }}</td>
     <td>{{ group.admin?.username }}</td>
     <td>
-      <span *ngFor="let user of group.users">{{ user.username }}, </span>
+      <span *ngFor="let groupUser of group.groupUsers">{{ groupUser.user.username }}, </span>
     </td>
     <td>
       <span *ngFor="let message of group.messages">{{ message.content }}, </span>
