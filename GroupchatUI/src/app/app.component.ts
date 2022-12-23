@@ -20,8 +20,6 @@ export class AppComponent {
   constructor(private userService: UserService, private groupService: GroupService, private messageService: MessageService) {}
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe((result: User[]) => (this.users = result));
-    this.groupService.getGroups().subscribe((result: Group[]) => (this.groups = result, this.UpdateGroups()));
   }
 
   private UpdateGroups() {

@@ -1,37 +1,3 @@
 <router-outlet></router-outlet>
 
-Users:
-<table>
-  <thead>
-    <th>UserId</th>
-    <th>Username</th>
-  </thead>
-  <tbody>
-    <tr *ngFor="let user of users">
-      <td>{{ user.id }}</td>
-      <td>{{ user.username }}</td>
-    </tr>
-  </tbody>
-</table>
-
-Groups:
-<table>
-  <thead>
-    <th>GroupId</th>
-    <th>Name</th>
-    <th>Admin</th>
-    <th>Participants</th>
-    <th>Messages</th>
-  </thead>
-  <tr *ngFor="let group of groups">
-    <td>{{ group.id }}</td>
-    <td>{{ group.name }}</td>
-    <td>{{ group.admin?.username }}</td>
-    <td>
-      <span *ngFor="let groupUser of group.groupUsers">{{ groupUser.user.username }}, </span>
-    </td>
-    <td>
-      <span *ngFor="let message of group.messages">{{ message.content }}, </span>
-    </td>
-  </tr>
-</table>
+<sidebar></sidebar>
