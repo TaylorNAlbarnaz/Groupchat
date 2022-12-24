@@ -10,6 +10,8 @@ export class SidebarComponent {
   @Input() target: any;
   buttons: string[] = ["Grupo 1", "Grupo 2", "Grupo 3"];
 
+  openSidebar: boolean = true;
+
   displayTag: boolean = false;
   currentTag: string = "Tag";
   currentTagY: string = "200px";

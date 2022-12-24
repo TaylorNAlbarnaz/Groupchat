@@ -15,3 +15,11 @@
     height: 30px;
     left: 50px;
 }
+
+.sidebar-hide {
+    left: -64px;
+}
+
+.rotation {
+    transform: rotate( -180deg );
+}

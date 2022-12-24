@@ -1,7 +1,14 @@
-<div class="flex h-screen w-16 flex-col justify-between border-r bg-gray-800">
+<div class="relative transition-all left-0 flex h-screen w-20 md:w-16 flex-col justify-between border-r bg-gray-800"
+    [ngClass]="{'-left-20 md:-left-16': !openSidebar}"
+>
+    <div class="absolute left-20 md:left-16 top-1 transition-all cursor-pointer hover:translate-x-1 select-none"
+    (click)="openSidebar = !openSidebar">
+        <ion-icon [ngClass]="{'rotation': openSidebar}" class="text-4xl md:text-xl transition" name="chevron-forward"></ion-icon>
+    </div>
+
     <!-- Navigation -->
     <div>
-        <nav class="sidebar-list flex flex-col gap-1 pt-2">
+        <nav class="sidebar-list flex flex-col gap-2 mt:gap-1 pt-2 items-center">
             <sidebar-group
                 *ngFor="let button of buttons; let i = index"
                 id='button{{i}}'
