@@ -1,7 +1,8 @@
-<div class="relative transition-all left-0 flex h-screen w-20 md:w-16 flex-col justify-between border-r bg-gray-800"
-    [ngClass]="{'-left-20 md:-left-16': !openSidebar}"
+<div class="relative transition-all left-0 flex h-screen w-20 flex-col justify-between bg-gray-800"
+    [ngClass]="{'max-md:-left-20': !openSidebar}"
 >
-    <div class="absolute left-20 md:left-16 top-1 transition-all cursor-pointer hover:translate-x-1 select-none"
+    <!-- Sidebar Open Button -->
+    <div class="absolute md:hidden left-20 top-1 transition-all cursor-pointer hover:translate-x-1 select-none text-white"
     (click)="openSidebar = !openSidebar">
         <ion-icon [ngClass]="{'rotation': openSidebar}" class="text-4xl md:text-xl transition" name="chevron-forward"></ion-icon>
     </div>
@@ -42,7 +43,7 @@
     <span
         *ngIf="displayTag"
         [style.top]="currentTagY"
-        class="tag-display absolute ml-4 rounded bg-gray-800 px-2 py-1.5 w-max text-xs font-medium text-white">
+        class="tag-display absolute ml-8 mt:ml-4 rounded bg-gray-800 px-2 py-1.5 w-max text-xs font-medium text-white">
         {{ currentTag }}
     </span>
 </div>
