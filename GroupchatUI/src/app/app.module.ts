@@ -6,13 +6,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SidebarGroupComponent } from './components/sidebar-group/sidebar-group.component';
+import { MessageHolderComponent } from './components/messageholder/messageholder.component';
+import { SingleMessageComponent } from './components/singlemessage/singlemessage.component';
 import { IonicModule } from '@ionic/angular';
 
 @NgModule({
   declarations: [
     AppComponent,
     SidebarComponent,
-    SidebarGroupComponent
+    SidebarGroupComponent,
+    MessageHolderComponent,
+    SingleMessageComponent
   ],
   imports: [
     BrowserModule,

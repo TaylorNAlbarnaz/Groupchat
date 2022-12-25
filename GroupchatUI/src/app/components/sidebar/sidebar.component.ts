@@ -10,7 +10,7 @@ export class SidebarComponent {
   @Input() target: any;
   buttons: string[] = ["Grupo 1", "Grupo 2", "Grupo 3"];
 
-  openSidebar: boolean = true;
+  openSidebar: boolean = false;
 
   displayTag: boolean = false;
   currentTag: string = "Tag";
@@ -18,6 +18,6 @@ export class SidebarComponent {
 
   getTagPosition(target: number) {
     const el = document.querySelector('#button'+target) as HTMLElement;
-    this.currentTagY = (el.getBoundingClientRect().y + 5) +"px";
+    this.currentTagY = (el.getBoundingClientRect().y) +"px";
   }
 }
