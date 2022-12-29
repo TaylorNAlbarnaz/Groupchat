@@ -3,10 +3,10 @@ import { User } from "./user";
 import { GroupUser } from "./groupUser";
 
 export class Group {
-    id: number = 0;
+    id = 0;
     name = "";
     password?: string;
-    adminId: number = 0;
+    adminId = 0;
     admin: User | null = null;
 
     groupUsers: GroupUser[] = [];

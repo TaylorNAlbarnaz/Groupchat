@@ -19,11 +19,8 @@ export class AppComponent {
 
   constructor(private userService: UserService, private groupService: GroupService, private messageService: MessageService) {}
 
-  ngOnInit(): void {
-  }
-
   private UpdateGroups() {
-    for (let group of this.groups) {
+    for (const group of this.groups) {
       this.groupService.getGroupById(group.id).subscribe((result: Group) => 
       (
         group.admin = result.admin,

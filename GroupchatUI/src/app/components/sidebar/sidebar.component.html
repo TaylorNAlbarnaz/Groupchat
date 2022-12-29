@@ -10,12 +10,12 @@
     <!-- Navigation -->
     <div>
         <nav class="sidebar-list flex flex-col gap-3 mt:gap-1 pt-2 items-center">
-            <sidebar-group
+            <app-sidebar-group
                 *ngFor="let button of buttons; let i = index"
                 id='button{{i}}'
                 (mouseover)="displayTag=true; currentTag = button; getTagPosition(i)"
                 (mouseleave)="displayTag=false"
-            ></sidebar-group>
+            ></app-sidebar-group>
         </nav>
     </div>
 
