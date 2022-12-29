@@ -14,8 +14,8 @@
         (click)="resetScroll()"
     ></div>
 
-    <div class="absolute mx-auto left-1/2 -translate-x-1/2 top-4 w-1/12 h-8 bg-slate-700 text-white text-4xl
-        flex justify-center items-center rounded-lg cursor-pointer"
+    <div class="absolute mx-auto left-1/2 -translate-x-1/2 top-4 border border-slate-400 w-1/4 md:w-1/12 h-8 bg-slate-700
+    text-white text-4xl flex justify-center items-center rounded-lg cursor-pointer"
         *ngIf="atTop && loadedMessages < messagesDb.length"
         (click)="loadMoreMessages()">...</div>
 </div>
