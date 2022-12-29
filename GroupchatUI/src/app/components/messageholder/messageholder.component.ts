@@ -10,16 +10,22 @@ import { Component } from '@angular/core';
 export class MessageHolderComponent {
   shadowRef: Element | null;
   atBottom: boolean = true;
+  atTop: boolean = false;
 
-  messages: string[] = Array.from(Array(100).keys()).map(n => n.toString().repeat(5));
-  loadedMessages: string[] = this.messages.slice(0, 20);
+  loadedMessages: number = 20;
+  messagesDb: string[] = Array.from(Array(100).keys()).map(n => n.toString().repeat(5));
+  messages: string[] = this.messagesDb.slice(0, this.loadedMessages);
 
   ngAfterViewInit() {
     this.shadowRef = document.querySelector('.holder');
   }
 
   onScroll() {
+    const scrollHeight = this.shadowRef?.scrollHeight as number;
+    const divHeight = this.shadowRef?.clientHeight as number;
+
     this.atBottom = (this.shadowRef?.scrollTop == 0);
+    this.atTop = (-(scrollHeight - divHeight) == this.shadowRef?.scrollTop);
   }
 
   resetScroll() {
@@ -33,5 +39,13 @@ export class MessageHolderComponent {
       return true;
     }
     return false;
+  }
+
+  loadMoreMessages() {
+    const messagesToAdd: string[] = this.messagesDb.slice(this.loadedMessages, this.loadedMessages + 20);
+    this.messages = this.messages.concat(messagesToAdd);
+
+    this.loadedMessages += messagesToAdd.length;
+    this.atTop = false;
   }
 }
