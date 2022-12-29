@@ -1,25 +1,11 @@
 <div class="relative">
     <div class="holder flex flex-col-reverse p-4 gap-4 h-screen overflow-y-scroll scroll-smooth"
         (scroll)="onScroll()">
-        <single-message></single-message>
-        <single-message></single-message>
-        <single-message [left]=true></single-message>
-        <single-message></single-message>
-        <single-message></single-message>
-        <single-message [left]=true></single-message>
-        <single-message></single-message>
-        <single-message></single-message>
-        <single-message [left]=true></single-message>
-        <single-message></single-message>
-        <single-message></single-message>
-        <single-message [left]=true></single-message>
-        <single-message></single-message>
-        <single-message></single-message>
-        <single-message [left]=true></single-message>
-        <single-message [left]=true></single-message>
-        <single-message></single-message>
-        <single-message></single-message>
-        <single-message [left]=true></single-message>
+        <single-message
+            *ngFor="let message of loadedMessages"
+            [content]="message"
+            [left]="getLeft(message)"
+            ></single-message>
     </div>
     <div class="bt-shadow absolute bottom-0 w-full h-1/6 opacity-100 bg-black"
         [style.opacity]="atBottom ? 0 : 1"

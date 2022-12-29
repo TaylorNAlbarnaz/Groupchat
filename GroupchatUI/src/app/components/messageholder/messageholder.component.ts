@@ -11,6 +11,9 @@ export class MessageHolderComponent {
   shadowRef: Element | null;
   atBottom: boolean = true;
 
+  messages: string[] = Array.from(Array(100).keys()).map(n => n.toString().repeat(5));
+  loadedMessages: string[] = this.messages.slice(0, 20);
+
   ngAfterViewInit() {
     this.shadowRef = document.querySelector('.holder');
   }
@@ -23,5 +26,12 @@ export class MessageHolderComponent {
     if (this.shadowRef && !this.atBottom) {
       this.shadowRef.scrollTop = 0;
     }
+  }
+
+  getLeft(n: string) {
+    if (Number(n) % 2 === 0){
+      return true;
+    }
+    return false;
   }
 }

@@ -5,6 +5,6 @@ import { Component, Input } from '@angular/core';
   templateUrl: './singlemessage.component.html'
 })
 export class SingleMessageComponent {
-  @Input()
-  left: boolean = false;
+  @Input() left: boolean = false;
+  @Input() content: string = "";
 }
