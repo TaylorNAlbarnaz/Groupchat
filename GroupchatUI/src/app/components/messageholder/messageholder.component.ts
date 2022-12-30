@@ -3,7 +3,7 @@ import { AfterViewInit, Component } from '@angular/core';
 @Component({
   selector: 'app-message-holder',
   templateUrl: './messageholder.component.html',
-  styles: ['.holder {overflow-y: scroll; -ms-overflow-style: none; scrollbar-width: none;}',
+  styles: ['.holder {overflow-y: scroll; -ms-overflow-style: none; scrollbar-width: none; height: 93vh;}',
   '.holder::-webkit-scrollbar {display: none;}',
   '.bt-shadow {background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.6) 100%); transition: 0.3s;}']
 })
@@ -22,9 +22,10 @@ export class MessageHolderComponent implements AfterViewInit{
 
   onScroll() {
     const scrollHeight = this.shadowRef?.scrollHeight as number;
+    const scrollTop = this.shadowRef?.scrollTop as number;
     const divHeight = this.shadowRef?.clientHeight as number;
 
-    this.atBottom = (this.shadowRef?.scrollTop == 0);
+    this.atBottom = (scrollTop > -200);
     this.atTop = (-(scrollHeight - divHeight) == this.shadowRef?.scrollTop);
   }
 

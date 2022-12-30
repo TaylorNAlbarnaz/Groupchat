@@ -9,6 +9,7 @@ import { SidebarGroupComponent } from './components/sidebar-group/sidebar-group.
 import { MessageHolderComponent } from './components/messageholder/messageholder.component';
 import { SingleMessageComponent } from './components/singlemessage/singlemessage.component';
 import { IonicModule } from '@ionic/angular';
+import { MessageboxComponent } from './components/messagebox/messagebox.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { IonicModule } from '@ionic/angular';
     SidebarComponent,
     SidebarGroupComponent,
     MessageHolderComponent,
-    SingleMessageComponent
+    SingleMessageComponent,
+    MessageboxComponent
   ],
   imports: [
     BrowserModule,
