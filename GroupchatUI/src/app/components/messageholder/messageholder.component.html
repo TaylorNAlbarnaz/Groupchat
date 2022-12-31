@@ -10,12 +10,13 @@
 
     <div class="bt-shadow absolute bottom-0 w-full h-1/6 opacity-100"
         [style.opacity]="atBottom ? 0 : 1"
-        [ngClass]="{'cursor-pointer': !atBottom}"
+        [ngClass]="{'cursor-pointer hover:!opacity-60': !atBottom}"
         (click)="resetScroll()"
     ></div>
 
-    <div class="absolute mx-auto left-1/2 -translate-x-1/2 top-4 border border-slate-400 w-1/4 md:w-1/12 h-8 bg-slate-700
-    text-white text-4xl flex justify-center items-center rounded-lg cursor-pointer"
+    <!-- Load More Messages Button -->
+    <div class="absolute mx-auto left-1/2 -translate-x-1/2 top-4 border border-gray-600 w-1/4 md:w-1/12 h-8 bg-gray-700
+    text-white text-4xl flex justify-center items-center rounded-lg cursor-pointer transition-all hover:scale-110"
         *ngIf="atTop && loadedMessages < messagesDb.length"
         (click)="loadMoreMessages()">...</div>
 </div>

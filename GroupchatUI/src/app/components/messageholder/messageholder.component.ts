@@ -26,7 +26,7 @@ export class MessageHolderComponent implements AfterViewInit{
     const divHeight = this.shadowRef?.clientHeight as number;
 
     this.atBottom = (scrollTop > -200);
-    this.atTop = (-(scrollHeight - divHeight) == this.shadowRef?.scrollTop);
+    this.atTop = (-(scrollHeight - divHeight) >= scrollTop - 50);
   }
 
   resetScroll() {
