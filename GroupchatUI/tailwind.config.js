@@ -19,6 +19,9 @@ module.exports = {
     maxWidth: {
       'm': '80%'
     },
+    fontSize: {
+      xs: '0.7rem'
+    }
   },
   plugins: [],
 }

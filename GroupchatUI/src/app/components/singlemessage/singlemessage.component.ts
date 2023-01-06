@@ -7,4 +7,6 @@ import { Component, Input } from '@angular/core';
 export class SingleMessageComponent {
   @Input() left = false;
   @Input() content = "";
+  @Input() name = "";
+  @Input() time = "";
 }
