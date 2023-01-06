@@ -14,13 +14,13 @@ module.exports = {
           800: '#1d1e24',
           900: '#16171b',
         }
+      },
+      fontSize: {
+        xs: '0.7rem'
       }
     },
     maxWidth: {
       'm': '80%'
-    },
-    fontSize: {
-      xs: '0.7rem'
     }
   },
   plugins: [],
