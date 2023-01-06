@@ -16,6 +16,13 @@
                 (mouseover)="displayTag=true; currentTag = button; getTagPosition(i)"
                 (mouseleave)="displayTag=false"
             ></app-sidebar-group>
+
+            <app-sidebar-group
+                id='button4'
+                (mouseover)="displayTag=true; currentTag = 'Grupo 4'; getTagPosition(4)"
+                (mouseleave)="displayTag=false"
+                [selected]="true"
+            ></app-sidebar-group>
         </nav>
     </div>
 
