@@ -2,9 +2,8 @@
     [ngClass]="{'ml-auto text-left items-end': left}">
     <div class="flex flex-row text-xs gap-3">
         <span>{{ name }}</span>
-        <span class="text-gray-400">{{ time }}</span>
     </div>
-    <div class="bg-gray-900 rounded-b-2xl p-2 w-fit"
+    <div class="bg-gray-900 rounded-b-2xl p-2 w-fit max-w-full"
         [ngClass]="{'rounded-tl-2xl': left, 'rounded-tr-2xl' : !left}">
         <p>{{ content }}</p>
     </div>

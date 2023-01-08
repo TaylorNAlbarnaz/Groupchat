@@ -13,7 +13,7 @@ export class MessageHolderComponent implements AfterViewInit{
   atTop = false;
 
   loadedMessages = 20;
-  messagesDb: string[] = Array.from(Array(100).keys()).map(n => n.toString().repeat(5));
+  messagesDb: string[] = Array.from(Array(200).keys()).map(n => n.toString().repeat(150));
   messages: string[] = this.messagesDb.slice(0, this.loadedMessages);
 
   ngAfterViewInit() {
@@ -35,8 +35,8 @@ export class MessageHolderComponent implements AfterViewInit{
     }
   }
 
-  getLeft(n: string) {
-    if (Number(n) % 2 === 0){
+  getLeft(n: number) {
+    if (n % 2 === 0){
       return true;
     }
     return false;

@@ -8,5 +8,4 @@ export class SingleMessageComponent {
   @Input() left = false;
   @Input() content = "";
   @Input() name = "";
-  @Input() time = "";
 }

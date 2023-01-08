@@ -17,10 +17,10 @@ module.exports = {
       },
       fontSize: {
         xs: '0.7rem'
+      },
+      maxWidth: {
+        'm': '80%'
       }
-    },
-    maxWidth: {
-      'm': '80%'
     }
   },
   plugins: [],
