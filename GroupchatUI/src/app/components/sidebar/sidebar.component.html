@@ -29,8 +29,10 @@
     <!-- Options -->
     <div class="sticky inset-x-0 bottom-0 border-t border-gray-800 bg-gray-700 p-2 z-10">
         <form action="/logout">
-            <button type="submit"
-                class="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-white hover:scale-110">
+            <a
+                routerLink="/settings"
+                class="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm 
+                    cursor-pointer text-white hover:scale-110">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-5 md:w-5 opacity-75" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -43,7 +45,7 @@
                     text-white hidden group-hover:inline-block border-gray-300 border">
                     Settings
                 </span>
-            </button>
+            </a>
         </form>
     </div>
 
