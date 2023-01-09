@@ -20,6 +20,6 @@ Para instalar e executar o projeto, é necessário o SQL Server instalado, tamb�
 
 6 - Instale as extensões utilizando o npm update ou yarn upgrade, será também necessário instalar a última versão do **Angular**
 
-7 - Execute o projeto com '"ng serve -o"' e aguarde até ele abrir em seu navegador
+7 - Execute o projeto com `ng serve -o` e aguarde até ele abrir em seu navegador
 
 8 - Caso não haja nenhum erro, ambos o back-end e front-end estarão funcionando corretamente.
