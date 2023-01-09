@@ -33,7 +33,7 @@ export class MessageHolderComponent implements AfterViewInit{
     }
   }
 
-  getLeft(n: number) {
+  getClient(n: number) {
     if (n % 2 === 0){
       return true;
     }

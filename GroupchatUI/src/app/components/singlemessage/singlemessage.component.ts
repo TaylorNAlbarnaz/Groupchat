@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   templateUrl: './singlemessage.component.html'
 })
 export class SingleMessageComponent {
-  @Input() left = false;
+  @Input() client = false;
   @Input() content = "";
   @Input() name = "";
 }
