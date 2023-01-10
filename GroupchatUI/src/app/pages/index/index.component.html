@@ -1,7 +1,13 @@
-<div class="flex h-full w-full">
-    <app-sidebar class="inline-block absolute md:relative"></app-sidebar>
-    <div class="flex flex-col h-full message-content">
-        <app-message-holder class="inline-block w-full"></app-message-holder>
-        <app-messagebox class="h-full"></app-messagebox>
+<div class="relative">
+    <div class="flex h-full w-full">
+        <app-sidebar class="inline-block absolute md:relative" (openSettings)="openSettings()"></app-sidebar>
+        <div class="flex flex-col h-full message-content">
+            <app-message-holder class="inline-block w-full"></app-message-holder>
+            <app-messagebox class="h-full"></app-messagebox>
+        </div>
+    </div>
+
+    <div>
+        <app-settings-modal [(show)]="settings"></app-settings-modal>
     </div>
 </div>

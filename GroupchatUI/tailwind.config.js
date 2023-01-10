@@ -19,7 +19,7 @@ module.exports = {
         xs: '0.7rem'
       },
       maxWidth: {
-        'm': '80%'
+        'm': '70%'
       }
     }
   },

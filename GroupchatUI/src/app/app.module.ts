@@ -12,6 +12,8 @@ import { IonicModule } from '@ionic/angular';
 import { MessageboxComponent } from './components/messagebox/messagebox.component';
 import { IndexComponent } from './pages/index/index.component';
 import { AuthComponent } from './pages/auth/auth.component';
+import { LoginboxComponent } from './components/loginbox/loginbox.component';
+import { SettingsModalComponent } from './components/settings-modal/settings-modal.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { AuthComponent } from './pages/auth/auth.component';
     SingleMessageComponent,
     MessageboxComponent,
     IndexComponent,
-    AuthComponent
+    AuthComponent,
+    LoginboxComponent,
+    SettingsModalComponent
   ],
   imports: [
     BrowserModule,

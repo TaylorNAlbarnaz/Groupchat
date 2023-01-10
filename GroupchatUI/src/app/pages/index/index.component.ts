@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent {
+  settings: boolean = false;
 
+  openSettings() {
+    this.settings = true;
+  }
 }

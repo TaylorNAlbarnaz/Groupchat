@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,6 +7,8 @@ import { Component, Input } from '@angular/core';
 })
 export class SidebarComponent {
   @Input() target: number;
+  @Output("openSettings") openSettings: EventEmitter<any> = new EventEmitter();
+  
   buttons: string[] = ["Grupo 1", "Grupo 2", "Grupo 3"];
 
   openSidebar = false;
