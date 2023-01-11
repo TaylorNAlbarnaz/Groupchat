@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
+import { ReactiveFormsModule } from '@angular/forms'
+
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SidebarGroupComponent } from './components/sidebar-group/sidebar-group.component';
@@ -32,6 +33,7 @@ import { SettingsModalComponent } from './components/settings-modal/settings-mod
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    ReactiveFormsModule,
     IonicModule.forRoot()
   ],
   providers: [],

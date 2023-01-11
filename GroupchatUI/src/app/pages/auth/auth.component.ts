@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent {
-  @Input() register: boolean = true;
+  @Input() register: boolean = false;
 }
