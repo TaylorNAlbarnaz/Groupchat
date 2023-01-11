@@ -8,8 +8,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class SettingsModalComponent {
   @Output() showChange: EventEmitter<any> = new EventEmitter();
   @Input() show: boolean;
+  screen: number = 0;
 
   close() {
+    this.screen = 0;
+    
     this.show = false;
     this.showChange.emit(this.show);
   }
