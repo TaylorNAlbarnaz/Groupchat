@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class IndexComponent {
   settings: boolean = false;
+  messages: string[];
 
   constructor(private cookieService: CookieService, private router: Router) {}
 

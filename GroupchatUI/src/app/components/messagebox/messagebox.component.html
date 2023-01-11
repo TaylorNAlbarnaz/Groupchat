@@ -1,6 +1,6 @@
 <div class="relative px-2 py-1 w-full h-full border-0">
-    <input type="text" class="bg-gray-900 rounded-md w-full h-full text-white p-2 !outline-none" placeholder="Enter the text here..." />
-    <button class="absolute top-1/2 -translate-y-1/2 right-5">
+    <input [(ngModel)]="messageInput" type="text" class="bg-gray-900 rounded-md w-full h-full text-white p-2 !outline-none" placeholder="Enter the text here..." />
+    <button class="absolute top-1/2 -translate-y-1/2 right-5" (click)="sendMessage()">
         <ion-icon class="text-white text-2xl transition-all hover:scale-110 hover:text-slate-300" name="send"></ion-icon>
     </button>
 </div>

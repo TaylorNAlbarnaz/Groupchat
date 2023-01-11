@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-message-holder',
@@ -12,7 +12,14 @@ export class MessageHolderComponent implements AfterViewInit{
 
   loadedMessages = 20;
   messagesDb: string[] = Array.from(Array(200).keys()).map(n => n.toString().repeat(150));
-  messages: string[] = this.messagesDb.slice(0, this.loadedMessages);
+
+  @Output() messagesChange: EventEmitter<any> = new EventEmitter();
+  @Input() messages: string[];
+
+  ngOnInit() {
+    this.messages = this.messagesDb.slice(0, this.loadedMessages);
+    this.messagesChange.emit(this.messages);
+  }
 
   ngAfterViewInit() {
     this.shadowRef = document.querySelector('.holder');
