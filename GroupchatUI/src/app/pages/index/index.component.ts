@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-index',
@@ -7,17 +8,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent {
-  logged: boolean = false;
   settings: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private cookieService: CookieService, private router: Router) {}
 
   openSettings() {
     this.settings = true;
   }
 
   ngOnInit() {
-    if (!this.logged) {
+    if (this.cookieService.get("email") === "") {
       this.router.navigate(['/auth'])
     }
   }
