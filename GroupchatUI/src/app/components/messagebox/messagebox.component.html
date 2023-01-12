@@ -1,5 +1,7 @@
 <div class="relative px-2 py-1 w-full h-full border-0">
-    <input [(ngModel)]="messageInput" type="text" class="bg-gray-900 rounded-md w-full h-full text-white p-2 !outline-none" placeholder="Enter the text here..." />
+    <input [(ngModel)]="messageInput" (keydown.enter)="sendMessage()" (input)="checkMessageSize()" type="text" class="bg-gray-900
+        rounded-md w-full h-full text-white p-2 !outline-none"  placeholder="Enter the text here..."
+        [ngClass]="{'border-red-600 ring-red-600 border': messageTooBig}"/>
     <button class="absolute top-1/2 -translate-y-1/2 right-5" (click)="sendMessage()">
         <ion-icon class="text-white text-2xl transition-all hover:scale-110 hover:text-slate-300" name="send"></ion-icon>
     </button>

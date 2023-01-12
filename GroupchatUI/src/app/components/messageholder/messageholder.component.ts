@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { MessageDto } from 'src/app/models/messageDto';
 
 @Component({
   selector: 'app-message-holder',
@@ -13,12 +15,28 @@ export class MessageHolderComponent implements AfterViewInit{
   loadedMessages = 20;
   messagesDb: string[] = Array.from(Array(200).keys()).map(n => n.toString().repeat(150));
 
+  loggedUser: string;
+
   @Output() messagesChange: EventEmitter<any> = new EventEmitter();
-  @Input() messages: string[];
+  @Input() messages: MessageDto[];
+
+  constructor(private cookieService: CookieService) {}
 
   ngOnInit() {
-    this.messages = this.messagesDb.slice(0, this.loadedMessages);
+    const messageList = this.messagesDb.slice(0, this.loadedMessages);
+    let messageDtoList: MessageDto[] = [];
+
+    for (let i = 0; i < messageList.length; i ++) {
+      const newMessage = new MessageDto();
+      newMessage.content = messageList[i];
+      newMessage.login = (i % 2 == 0) ? this.loggedUser : '';
+
+      messageDtoList = messageDtoList.concat(newMessage);
+    }
+    this.messages = messageDtoList;
     this.messagesChange.emit(this.messages);
+
+    this.loggedUser = this.cookieService.get("email");
   }
 
   ngAfterViewInit() {
@@ -40,8 +58,8 @@ export class MessageHolderComponent implements AfterViewInit{
     }
   }
 
-  getClient(n: number) {
-    if (n % 2 === 0){
+  getClient(login: string) {
+    if (login === this.loggedUser){
       return true;
     }
     return false;
@@ -49,7 +67,16 @@ export class MessageHolderComponent implements AfterViewInit{
 
   loadMoreMessages() {
     const messagesToAdd: string[] = this.messagesDb.slice(this.loadedMessages, this.loadedMessages + 20);
-    this.messages = this.messages.concat(messagesToAdd);
+    let messageDtoList: MessageDto[] = [];
+
+    for (let i = 0; i < messagesToAdd.length; i ++) {
+      const newMessage = new MessageDto();
+      newMessage.content = messagesToAdd[i];
+      newMessage.login = (i % 2 == 0) ? this.loggedUser : '';
+
+      messageDtoList = messageDtoList.concat(newMessage);
+    }
+    this.messages = this.messages.concat(messageDtoList);
 
     this.loadedMessages += messagesToAdd.length;
     this.atTop = false;

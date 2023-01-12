@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { MessageDto } from 'src/app/models/messageDto';
 
 @Component({
   selector: 'app-index',
@@ -9,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class IndexComponent {
   settings: boolean = false;
-  messages: string[];
+  messages: MessageDto[];
 
   constructor(private cookieService: CookieService, private router: Router) {}
 

@@ -3,8 +3,8 @@
         (scroll)="onScroll()">
         <app-single-message
             *ngFor="let message of messages; let i = index"
-            [content]="message"
-            [client]="getClient(i)"
+            [content]="message.content"
+            [client]="getClient(message.login)"
             [name]="'Name'"
             ></app-single-message>
     </div>
