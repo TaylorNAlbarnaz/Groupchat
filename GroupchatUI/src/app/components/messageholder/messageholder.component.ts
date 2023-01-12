@@ -23,19 +23,6 @@ export class MessageHolderComponent implements AfterViewInit{
   constructor(private cookieService: CookieService) {}
 
   ngOnInit() {
-    const messageList = this.messagesDb.slice(0, this.loadedMessages);
-    let messageDtoList: MessageDto[] = [];
-
-    for (let i = 0; i < messageList.length; i ++) {
-      const newMessage = new MessageDto();
-      newMessage.content = messageList[i];
-      newMessage.login = (i % 2 == 0) ? this.loggedUser : '';
-
-      messageDtoList = messageDtoList.concat(newMessage);
-    }
-    this.messages = messageDtoList;
-    this.messagesChange.emit(this.messages);
-
     this.loggedUser = this.cookieService.get("email");
   }
 

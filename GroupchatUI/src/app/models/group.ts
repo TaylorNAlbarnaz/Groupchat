@@ -3,12 +3,12 @@ import { User } from "./user";
 import { GroupUser } from "./groupUser";
 
 export class Group {
-    id = 0;
-    name = "";
+    id: number;
+    name: string;
     password?: string;
-    adminId = 0;
-    admin: User | null = null;
+    adminId: number;
+    admin: User | null;
 
-    groupUsers: GroupUser[] = [];
-    messages: Message[] = [];
+    groupUsers: GroupUser[];
+    messages: Message[];
 }

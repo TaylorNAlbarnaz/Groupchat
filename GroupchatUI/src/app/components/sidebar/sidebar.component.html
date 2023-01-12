@@ -11,17 +11,12 @@
     <div>
         <nav class="sidebar-list flex flex-col pt-2 items-center">
             <app-sidebar-group
-                *ngFor="let button of buttons; let i = index"
+                *ngFor="let group of groups; let i = index"
                 id='button{{i}}'
-                (mouseover)="displayTag=true; currentTag = button; getTagPosition(i)"
+                (mouseover)="displayTag=true; currentTag = group.name; getTagPosition(i)"
                 (mouseleave)="displayTag=false"
-            ></app-sidebar-group>
-
-            <app-sidebar-group
-                id='button4'
-                (mouseover)="displayTag=true; currentTag = 'Grupo 4'; getTagPosition(4)"
-                (mouseleave)="displayTag=false"
-                [selected]="true"
+                (click)="changeGroup(i)"
+                [selected]="currentGroup === i"
             ></app-sidebar-group>
         </nav>
     </div>
