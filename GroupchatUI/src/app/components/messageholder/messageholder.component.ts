@@ -13,7 +13,7 @@ export class MessageHolderComponent implements AfterViewInit{
   atTop = false;
 
   loadedMessages = 20;
-  messagesDb: string[] = Array.from(Array(200).keys()).map(n => n.toString().repeat(150));
+  messagesDb: string[] = Array.from(Array(50).keys()).map(n => n.toString().repeat(100));
 
   loggedUser: string;
 
@@ -72,7 +72,7 @@ export class MessageHolderComponent implements AfterViewInit{
     for (let i = 0; i < messagesToAdd.length; i ++) {
       const newMessage = new MessageDto();
       newMessage.content = messagesToAdd[i];
-      newMessage.login = (i % 2 == 0) ? this.loggedUser : '';
+      newMessage.login = '';
 
       messageDtoList = messageDtoList.concat(newMessage);
     }
