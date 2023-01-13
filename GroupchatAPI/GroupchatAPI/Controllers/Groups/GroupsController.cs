@@ -45,6 +45,9 @@ namespace GroupchatAPI.Controllers.Groups
             if (groupDto.Id < 0)
                 return BadRequest("Invalid Group Index!");
 
+            if (groupDto.Name.Length < 3)
+                return BadRequest("Invalid Group Name!");
+
             if (!groupDto.UserIds.Contains(groupDto.AdminId))
                 return BadRequest("Admin has to be part of the group!");
 

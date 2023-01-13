@@ -176,7 +176,6 @@ namespace GroupchatAPI.Migrations
                     b.HasOne("GroupchatAPI.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Group");

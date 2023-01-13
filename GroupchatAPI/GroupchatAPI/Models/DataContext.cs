@@ -52,7 +52,7 @@ namespace GroupchatAPI.Models
                 .HasOne(m => m.User)
                 .WithMany()
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
 
         public DbSet<User> Users => Set<User>();

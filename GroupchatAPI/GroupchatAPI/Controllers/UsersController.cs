@@ -42,6 +42,12 @@ namespace GroupchatAPI.Controllers
             if (userDto.Id < 0)
                 return BadRequest("Invalid User Index!");
 
+            if (userDto.Username.Length < 5)
+                return BadRequest("Invalid Group Name!");
+
+            if (userDto.Password.Length < 8)
+                return BadRequest("Invalid Password!");
+
             dbUser = new User
             {
                 Username = userDto.Username,
