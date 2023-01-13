@@ -25,14 +25,23 @@ namespace GroupchatAPI.Controllers.Groups
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Group>> GetGroup(int id)
+        public async Task<ActionResult<GroupDto>> GetGroup(int id)
         {
             var dbGroup = repository.GetGroupFull(id);
 
             if (dbGroup == null)
                 return NotFound("Group not found!");
 
-            return Ok(dbGroup);
+            var dbGroupDto = new GroupDto()
+            {
+                Id = dbGroup.Id,
+                Name = dbGroup.Name,
+                AdminId = dbGroup.AdminId,
+                GroupUsers = dbGroup.GroupUsers,
+                Messages = dbGroup.Messages
+            };
+
+            return Ok(dbGroupDto);
         }
 
         [HttpPost]
