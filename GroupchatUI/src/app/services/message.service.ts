@@ -12,7 +12,7 @@ export class MessageService {
 
   constructor(private http: HttpClient) { }
 
-  public getMessages(id: number): Observable<Message[]> {
-    return this.http.get<Message[]>(`${environment.apiUrl}/${this.url}/${id}`);
+  public getMessages(groupId: number): Observable<Message[]> {
+    return this.http.get<Message[]>(`${environment.apiUrl}/${this.url}/${groupId}/${5}/${0}`);
   }
 }

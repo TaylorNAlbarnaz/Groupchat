@@ -17,7 +17,7 @@ namespace GroupchatAPI.Controllers.Groups
             this.context = context;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}/{qnt}/{offset}")]
         public async Task<ActionResult<Message>> GetGroupMessages(int id, int qnt, int offset)
         {
             if (qnt == 0)

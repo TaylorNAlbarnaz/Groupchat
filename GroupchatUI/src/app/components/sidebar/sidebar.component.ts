@@ -18,6 +18,9 @@ export class SidebarComponent {
   @Output() groupsChange: EventEmitter<any> = new EventEmitter();
   @Input() groups: GroupDto[] = [];
 
+  @Output() currentGroupIdChange: EventEmitter<any> = new EventEmitter();
+  @Input() currentGroupId: number = -1;
+
   currentGroup: number = -1;
 
   openSidebar = false;
@@ -45,8 +48,12 @@ export class SidebarComponent {
   changeGroup(id: number) {
     this.currentGroup = id;
 
-    //this.messages = this.groups[id].messages;
-    //this.messagesChange.emit(this.messages);
+    if (this.groups[this.currentGroup]) {
+      const groupId = this.groups[this.currentGroup].id;
+
+      this.currentGroupId = groupId;
+      this.currentGroupIdChange.emit(this.currentGroupId);
+    }
   }
 
   updateGroupMessages() {

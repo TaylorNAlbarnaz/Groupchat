@@ -1,10 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Group } from 'src/app/models/group';
 import { GroupDto } from 'src/app/models/groupDto';
 import { Message } from 'src/app/models/message';
 import { GroupService } from 'src/app/services/group.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-index',
@@ -20,7 +21,11 @@ export class IndexComponent {
   @Output() groupsChange: EventEmitter<any> = new EventEmitter();
   groups: GroupDto[] = [];
 
-  constructor(private cookieService: CookieService, private groupService: GroupService, private router: Router) {}
+  @Output() currentGroupIdChange: EventEmitter<any> = new EventEmitter();
+  @Input() currentGroupId: number = -1;
+
+  constructor(private cookieService: CookieService, private groupService: GroupService, private messageService: MessageService,
+    private router: Router, private changeDetector: ChangeDetectorRef) {}
 
   openSettings() {
     this.settings = true;
@@ -32,6 +37,21 @@ export class IndexComponent {
     }
 
     this.loadGroups();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log("Changed");
+    if (changes['currentGroupId']) {
+      console.log("Changed currentGroupId");
+      if (this.currentGroupId != -1) {
+        console.log("loadMessages Called");
+        this.loadMessages(this.currentGroupId);
+      }
+    }
+  }
+
+  ngAfterViewChecked() {
+    this.changeDetector.detectChanges();
   }
 
   // API
@@ -50,8 +70,22 @@ export class IndexComponent {
         this.groups = this.groups.concat(groupDto);
       }
 
+      if (this.currentGroupId === -1) {
+        this.currentGroupId = this.groups[0].id;
+        this.currentGroupIdChange.emit(this.currentGroupId);
+
+        this.loadMessages(this.currentGroupId);
+      }
+
       this.groupsChange.emit(this.groups);
-      console.log(this.groups);
+    });
+  }
+
+  loadMessages(groupId: number) {
+    this.messageService.getMessages(groupId).subscribe((result: Message[]) => {
+      this.messages = result;
+      this.messagesChange.emit(this.messages);
+      console.log(this.messages)
     });
   }
 }

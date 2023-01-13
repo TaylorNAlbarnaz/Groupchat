@@ -1,7 +1,7 @@
 <div class="relative">
     <div class="flex h-full w-full">
         <app-sidebar class="inline-block absolute md:relative" [(messages)]="messages" [(groups)]="groups"
-            (openSettings)="openSettings()"></app-sidebar>
+            [(currentGroupId)]="currentGroupId" (openSettings)="openSettings()"></app-sidebar>
         <div class="flex flex-col h-full message-content">
             <app-message-holder class="inline-block w-full" [(messages)]="messages"></app-message-holder>
             <app-messagebox class="h-full" [(messages)]="messages"></app-messagebox>
