@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { Message } from 'src/app/models/message';
 import { MessageDto } from 'src/app/models/messageDto';
 
 @Component({
@@ -9,14 +10,14 @@ import { MessageDto } from 'src/app/models/messageDto';
 })
 export class MessageboxComponent {
   @Output() messagesChange: EventEmitter<any> = new EventEmitter();
-  @Input() messages: MessageDto[];
+  @Input() messages: Message[];
   messageInput: string = "";
   messageTooBig: boolean = false;
 
   constructor (private cookieService: CookieService) { }
 
   sendMessage() {
-    if (this.messageInput != "") {
+    /*if (this.messageInput != "") {
       const newMessage = new MessageDto();
       newMessage.content = this.messageInput;
       newMessage.login = this.cookieService.get("email");
@@ -24,7 +25,7 @@ export class MessageboxComponent {
 
       this.messages = [newMessage].concat(this.messages);
       this.messagesChange.emit(this.messages);
-    }
+    }*/
   }
 
   checkMessageSize() {

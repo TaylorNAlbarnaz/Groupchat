@@ -4,7 +4,7 @@
         <app-single-message
             *ngFor="let message of messages; let i = index"
             [content]="message.content"
-            [client]="getClient(message.login)"
+            [client]="getClient(message)"
             [name]="'Name'"
             ></app-single-message>
     </div>

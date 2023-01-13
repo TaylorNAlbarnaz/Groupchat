@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { Message } from 'src/app/models/message';
 import { MessageDto } from 'src/app/models/messageDto';
 
 @Component({
@@ -18,7 +19,7 @@ export class MessageHolderComponent implements AfterViewInit{
   loggedUser: string;
 
   @Output() messagesChange: EventEmitter<any> = new EventEmitter();
-  @Input() messages: MessageDto[];
+  @Input() messages: Message[];
 
   constructor(private cookieService: CookieService) {}
 
@@ -45,25 +46,24 @@ export class MessageHolderComponent implements AfterViewInit{
     }
   }
 
-  getClient(login: string) {
-    if (login === this.loggedUser){
+  getClient(message: Message) {
+    /*if (login === this.loggedUser){
       return true;
-    }
+    }*/
     return false;
   }
 
   loadMoreMessages() {
     const messagesToAdd: string[] = this.messagesDb.slice(this.loadedMessages, this.loadedMessages + 20);
-    let messageDtoList: MessageDto[] = [];
+    let messageList: Message[] = [];
 
     for (let i = 0; i < messagesToAdd.length; i ++) {
-      const newMessage = new MessageDto();
+      const newMessage = new Message();
       newMessage.content = messagesToAdd[i];
-      newMessage.login = '';
 
-      messageDtoList = messageDtoList.concat(newMessage);
+      messageList = messageList.concat(newMessage);
     }
-    this.messages = this.messages.concat(messageDtoList);
+    this.messages = this.messages.concat(messageList);
 
     this.loadedMessages += messagesToAdd.length;
     this.atTop = false;

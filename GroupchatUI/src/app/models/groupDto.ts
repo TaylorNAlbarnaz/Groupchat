@@ -1,9 +1,10 @@
 import { GroupUser } from "./groupUser";
-import { MessageDto } from "./messageDto";
+import { Message } from "./message";
 
 export class GroupDto {
+    id: number;
     name: string;
     adminId: number;
     groupUsers: GroupUser[];
-    messages: MessageDto[];
+    messages: Message[];
 }
