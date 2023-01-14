@@ -33,6 +33,20 @@ namespace GroupchatAPI.Controllers
         }
 
         [HttpPost]
+        [Route("login")]
+        public async Task<ActionResult<Login>> LoginUser(LoginDto loginDto)
+        {
+            var dbLogin = context.Logins.FirstOrDefault(l => l.Email == loginDto.Email);
+            if (dbLogin == null)
+                return NotFound("Account not found!");
+
+            if (loginDto.Password != dbLogin.Password)
+                return BadRequest("Wrong password!");
+
+            return Ok(dbLogin);
+        }
+
+        [HttpPost]
         public async Task<ActionResult<User>> CreateUser(UserDto userDto)
         {
             var dbUser = await context.Users.FindAsync(userDto.Id);

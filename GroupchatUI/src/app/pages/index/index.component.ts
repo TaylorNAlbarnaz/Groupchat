@@ -3,8 +3,10 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Group } from 'src/app/models/group';
 import { GroupDto } from 'src/app/models/groupDto';
+import { LoginDto } from 'src/app/models/loginDto';
 import { Message } from 'src/app/models/message';
 import { GroupService } from 'src/app/services/group.service';
+import { LoginService } from 'src/app/services/login.service';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
@@ -25,14 +27,33 @@ export class IndexComponent {
   @Input() currentGroupId: number = -1;
 
   constructor(private cookieService: CookieService, private groupService: GroupService, private messageService: MessageService,
-    private router: Router, private changeDetector: ChangeDetectorRef) {}
+    private loginService: LoginService ,private router: Router, private changeDetector: ChangeDetectorRef) {}
 
   openSettings() {
     this.settings = true;
   }
 
   ngOnInit() {
-    if (this.cookieService.get("email") === "") {
+    const email = this.cookieService.get("email")
+    const password = this.cookieService.get("password");
+
+    const loginDto = new LoginDto();
+    loginDto.email = email;
+    loginDto.password = password;
+
+    if (email != "") {
+      this.loginService.login(loginDto).subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+        },
+        error: () => {
+          this.cookieService.delete('email')
+          this.cookieService.delete('password')
+
+          this.router.navigate(['/auth'])
+        }
+      });
+    } else {
       this.router.navigate(['/auth'])
     }
 

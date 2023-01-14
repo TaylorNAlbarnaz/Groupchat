@@ -3,7 +3,9 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Login } from 'src/app/models/login';
+import { LoginDto } from 'src/app/models/loginDto';
 import { Register } from 'src/app/models/register';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-loginbox',
@@ -16,10 +18,26 @@ export class LoginboxComponent {
   registerModel: Register;
 
   onSubmitLogin() {
-    this.cookieService.set('email', this.loginForm.value.loginEmail as string);
-    this.cookieService.set('password', this.loginForm.value.loginPassword as string);
+    const email = this.loginForm.value.loginEmail as string;
+    const password = this.loginForm.value.loginPassword as string;
 
-    this.router.navigate(['/']);
+    const loginDto = new LoginDto();
+    loginDto.email = email;
+    loginDto.password = password;
+
+    this.loginService.login(loginDto).subscribe({
+      next: (result) => {
+        this.cookieService.set('email', result.email)
+        this.cookieService.set('password', result.password)
+
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        console.log("Login Failed!");
+
+        this.loginForm.setValue({loginEmail: '', loginPassword: ''});
+      }
+    });
   }
 
   onSubmitRegister() {
@@ -33,7 +51,7 @@ export class LoginboxComponent {
     return password?.value === repeatPassword?.value ? null : { notmached: true };
   }
 
-  constructor (private cookieService: CookieService, private router: Router) { }
+  constructor (private cookieService: CookieService, private loginService: LoginService ,private router: Router) { }
 
   loginForm = new FormGroup({
     loginEmail: new FormControl('', Validators.required),
