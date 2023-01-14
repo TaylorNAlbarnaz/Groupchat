@@ -6,6 +6,6 @@
         public string Name { get; set; }
         public int AdminId { get; set; }
         public int[] UserIds { get; set; }
-        public int[] MessageIds { get; set; }
+        public int[]? MessageIds { get; set; }
     }
 }

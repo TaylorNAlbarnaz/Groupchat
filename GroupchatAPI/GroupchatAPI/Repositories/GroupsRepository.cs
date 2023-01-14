@@ -36,6 +36,11 @@ namespace GroupchatAPI.Repositories
         {
             var messageList = new List<Message>();
 
+            if (messageIds == null)
+            {
+                return messageList;
+            }
+
             foreach (var messageId in messageIds)
             {
                 var dbMessage = await context.Messages.FindAsync(messageId);

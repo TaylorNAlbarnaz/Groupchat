@@ -34,9 +34,6 @@ namespace GroupchatAPI.Controllers.Groups
             if (dbMessages == null)
                 return NotFound("Group messages not found!");
 
-            if (dbMessages.Count == 0)
-                return NotFound("No more messages found!");
-
             return Ok(dbMessages);
         }
 

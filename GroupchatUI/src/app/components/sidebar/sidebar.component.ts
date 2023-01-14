@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { GroupDto } from 'src/app/models/groupDto';
 import { Message } from 'src/app/models/message';
-import { MessageDto } from 'src/app/models/messageDto';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -51,6 +51,12 @@ export class SidebarComponent {
     if (this.groups[this.currentGroup]) {
       const groupId = this.groups[this.currentGroup].id;
 
+      this.messageService.getMessages(groupId).subscribe((result: Message[]) => {
+        this.messages = result;
+        this.messagesChange.emit(this.messages);
+        console.log(this.messages)
+      });
+
       this.currentGroupId = groupId;
       this.currentGroupIdChange.emit(this.currentGroupId);
     }
@@ -61,4 +67,6 @@ export class SidebarComponent {
       this.groups[this.currentGroup].messages = this.messages;
     }
   }
+
+  constructor(private messageService: MessageService) {}
 }

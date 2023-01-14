@@ -21,7 +21,7 @@ export class IndexComponent {
   messages: Message[];
 
   @Output() groupsChange: EventEmitter<any> = new EventEmitter();
-  groups: GroupDto[] = [];
+  @Input() groups: GroupDto[] = [];
 
   @Output() currentGroupIdChange: EventEmitter<any> = new EventEmitter();
   @Input() currentGroupId: number = -1;
@@ -30,7 +30,7 @@ export class IndexComponent {
   @Input() loggedUser: string = '';
 
   constructor(private cookieService: CookieService, private groupService: GroupService, private messageService: MessageService,
-    private loginService: LoginService ,private router: Router, private changeDetector: ChangeDetectorRef) {}
+    private loginService: LoginService, private router: Router, private changeDetector: ChangeDetectorRef) {}
 
   openSettings() {
     this.settings = true;
@@ -69,11 +69,8 @@ export class IndexComponent {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("Changed");
     if (changes['currentGroupId']) {
-      console.log("Changed currentGroupId");
       if (this.currentGroupId != -1) {
-        console.log("loadMessages Called");
         this.loadMessages(this.currentGroupId);
       }
     }
