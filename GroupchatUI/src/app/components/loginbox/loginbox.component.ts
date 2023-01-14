@@ -20,6 +20,7 @@ export class LoginboxComponent {
   onSubmitLogin() {
     const email = this.loginForm.value.loginEmail as string;
     const password = this.loginForm.value.loginPassword as string;
+    const rememberme = this.loginForm.value.loginRememberme as boolean;
 
     const loginDto = new LoginDto();
     loginDto.email = email;
@@ -27,15 +28,20 @@ export class LoginboxComponent {
 
     this.loginService.login(loginDto).subscribe({
       next: (result) => {
-        this.cookieService.set('email', result.email)
-        this.cookieService.set('password', result.password)
+        if (rememberme) {
+          this.cookieService.set('email', result.email)
+          this.cookieService.set('password', result.password)
+        } else {
+          this.cookieService.set('email', result.email, 30)
+          this.cookieService.set('password', result.password, 30)
+        }
 
         this.router.navigate(['/']);
       },
       error: () => {
         console.log("Login Failed!");
 
-        this.loginForm.setValue({loginEmail: '', loginPassword: ''});
+        this.loginForm.setValue({loginEmail: '', loginPassword: '', loginRememberme: false});
       }
     });
   }
@@ -58,7 +64,8 @@ export class LoginboxComponent {
     loginPassword: new FormControl('', [
       Validators.required,
       Validators.minLength(8)
-    ])
+    ]),
+    loginRememberme: new FormControl(false)
   })
 
   registerForm = new FormGroup({

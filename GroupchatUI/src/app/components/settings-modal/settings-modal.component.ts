@@ -11,6 +11,10 @@ import { CookieService } from 'ngx-cookie-service';
 export class SettingsModalComponent {
   @Output() showChange: EventEmitter<any> = new EventEmitter();
   @Input() show: boolean;
+
+  @Output() loggedUserChange: EventEmitter<any> = new EventEmitter();
+  @Input() loggedUser: string;
+
   screen: number = 0;
 
   passwordMatchingValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {

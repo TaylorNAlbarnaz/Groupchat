@@ -36,7 +36,9 @@ namespace GroupchatAPI.Controllers
         [Route("login")]
         public async Task<ActionResult<Login>> LoginUser(LoginDto loginDto)
         {
-            var dbLogin = context.Logins.FirstOrDefault(l => l.Email == loginDto.Email);
+            var dbLogin = context.Logins
+                .Include(l => l.User)
+                .FirstOrDefault(l => l.Email == loginDto.Email);
             if (dbLogin == null)
                 return NotFound("Account not found!");
 

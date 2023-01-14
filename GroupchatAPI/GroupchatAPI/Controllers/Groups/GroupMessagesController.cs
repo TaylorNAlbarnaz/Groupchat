@@ -25,6 +25,7 @@ namespace GroupchatAPI.Controllers.Groups
 
             var dbMessages = await context.Messages
                 .OrderByDescending(m => m.Id)
+                .Include(m => m.User)
                 .Skip(offset)
                 .Take(qnt)
                 .Where(m => m.GroupId == id)

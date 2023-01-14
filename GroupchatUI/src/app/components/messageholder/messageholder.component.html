@@ -5,7 +5,7 @@
             *ngFor="let message of messages; let i = index"
             [content]="message.content"
             [client]="getClient(message)"
-            [name]="'Name'"
+            [name]="message.user != null ? message.user.username : 'name'"
             ></app-single-message>
     </div>
 

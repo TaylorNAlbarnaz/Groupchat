@@ -2,6 +2,6 @@ import { User } from "./user";
 
 export class Message {
     id: number;
-    owner: User | null;
+    user: User | null;
     content: string;
 }

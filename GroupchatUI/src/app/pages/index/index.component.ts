@@ -26,6 +26,9 @@ export class IndexComponent {
   @Output() currentGroupIdChange: EventEmitter<any> = new EventEmitter();
   @Input() currentGroupId: number = -1;
 
+  @Output() loggedUserChange: EventEmitter<any> = new EventEmitter();
+  @Input() loggedUser: string = '';
+
   constructor(private cookieService: CookieService, private groupService: GroupService, private messageService: MessageService,
     private loginService: LoginService ,private router: Router, private changeDetector: ChangeDetectorRef) {}
 
@@ -43,10 +46,15 @@ export class IndexComponent {
 
     if (email != "") {
       this.loginService.login(loginDto).subscribe({
-        next: () => {
+        next: (result) => {
+          this.loggedUser = result.user.username;
+          this.loggedUserChange.emit(this.loggedUser);
+
+          this.cookieService.set('username', result.user.username)
           this.router.navigate(['/']);
         },
         error: () => {
+          this.cookieService.delete('username')
           this.cookieService.delete('email')
           this.cookieService.delete('password')
 
