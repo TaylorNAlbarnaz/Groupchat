@@ -16,6 +16,8 @@ export class LoginboxComponent {
   @Input() register: boolean = true;
   loginModel: Login;
   registerModel: Register;
+  
+  loginError: boolean = false;
 
   onSubmitLogin() {
     const email = this.loginForm.value.loginEmail as string;
@@ -28,6 +30,8 @@ export class LoginboxComponent {
 
     this.loginService.login(loginDto).subscribe({
       next: (result) => {
+        this.loginError = false;
+
         if (rememberme) {
           this.cookieService.set('email', result.email)
           this.cookieService.set('password', result.password)
@@ -39,9 +43,10 @@ export class LoginboxComponent {
         this.router.navigate(['/']);
       },
       error: () => {
-        console.log("Login Failed!");
+        this.loginError = true;
+        console.log(this.loginError)
 
-        this.loginForm.setValue({loginEmail: '', loginPassword: '', loginRememberme: false});
+        //this.loginForm.setValue({loginEmail: '', loginPassword: '', loginRememberme: false});
       }
     });
   }
