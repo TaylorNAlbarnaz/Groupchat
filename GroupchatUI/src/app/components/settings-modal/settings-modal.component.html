@@ -38,7 +38,7 @@
 
     <!-- Change Username -->
     <form class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-40 text-white bg-gray-800 z-30
-        rounded-lg p-3 flex flex-col justify-between" [formGroup]="usernameForm"
+        rounded-lg p-3 flex flex-col justify-between" [formGroup]="usernameForm" (ngSubmit)="onChangeCredentials(1)"
         *ngIf="screen === 1">
         <div>
             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New Username</label>
@@ -60,7 +60,7 @@
 
     <!-- Change Password -->
     <form class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-80 text-white bg-gray-800 z-30
-        rounded-lg p-3 flex flex-col justify-between" [formGroup]="passwordForm"
+        rounded-lg p-3 flex flex-col justify-between" [formGroup]="passwordForm" (ngSubmit)="onChangeCredentials(2)"
         *ngIf="screen === 2">
         <div>
             <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Old Password</label>
@@ -108,4 +108,46 @@
             </div>
         </div>
     </form>
+
+    <!-- Username changed -->
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-24 text-white bg-gray-800 z-30
+        rounded-lg p-3 text-center"
+        *ngIf="screen === 4">
+        Your username has been changed!
+
+        <div class="flex justify-center gap-2 p-2 w-full">
+            <div class="inline-flex items-center bg-green-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center
+                cursor-pointer hover:bg-green-600" (click)="close()">
+                Ok
+            </div>
+        </div>
+    </div>
+
+    <!-- Password changed -->
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-24 text-white bg-gray-800 z-30
+        rounded-lg p-3 text-center"
+        *ngIf="screen === 5">
+        Your password has been changed!
+
+        <div class="flex justify-center gap-2 p-2 w-full">
+            <div class="inline-flex items-center bg-green-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center
+                cursor-pointer hover:bg-green-600" (click)="close()">
+                Ok
+            </div>
+        </div>
+    </div>
+
+    <!-- Error occurred -->
+    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-24 text-white bg-gray-800 z-30
+        rounded-lg p-3 text-center"
+        *ngIf="screen === 6">
+        An error has occurred
+
+        <div class="flex justify-center gap-2 p-2 w-full">
+            <div class="inline-flex items-center bg-red-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center
+                cursor-pointer hover:bg-red-600" (click)="close()">
+                Ok
+            </div>
+        </div>
+    </div>
 </div>

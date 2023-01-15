@@ -49,7 +49,7 @@ namespace GroupchatAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> CreateUser(UserDto userDto)
+        public async Task<ActionResult> CreateUser(UserDto userDto)
         {
             var dbUser = await context.Users.FindAsync(userDto.Id);
             if (dbUser != null)
@@ -84,7 +84,7 @@ namespace GroupchatAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<User>> UpdateUser(UserDto userDto)
+        public async Task<ActionResult> UpdateUser(UserDto userDto)
         {
             var dbUser = await context.Users.FindAsync(userDto.Id);
             if (dbUser == null)
@@ -103,7 +103,7 @@ namespace GroupchatAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(int id)
+        public async Task<ActionResult> DeleteUser(int id)
         {
             var dbUser = await context.Users.FindAsync(id);
             if (dbUser == null)
@@ -113,6 +113,27 @@ namespace GroupchatAPI.Controllers
             await context.SaveChangesAsync();
 
             return Ok(($"User {dbUser.Username} successfully disabled!"));
+        }
+
+        [HttpPost("{id}")]
+        public ActionResult<User> GetFullUser(int id, LoginDto loginDto)
+        {
+            var dbUser = context.Users
+                .Include(u => u.Login)
+                .FirstOrDefault(u => u.Id == id);
+            if (dbUser == null)
+                return NotFound("User not found!");
+
+            var dbLogin = context.Logins
+                .FirstOrDefault(l => l.User.Id == id);
+            if (dbLogin == null)
+                return NotFound("Login not found!");
+
+            if (dbLogin.Email != loginDto.Email
+                || dbLogin.Password != loginDto.Password)
+                return BadRequest("Wrong Credentials!");
+
+            return Ok(dbUser);
         }
     }
 }

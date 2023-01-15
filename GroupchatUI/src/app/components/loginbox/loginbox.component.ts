@@ -33,9 +33,11 @@ export class LoginboxComponent {
         this.loginError = false;
 
         if (rememberme) {
+          this.cookieService.set('userId', ''+result.id)
           this.cookieService.set('email', result.email)
           this.cookieService.set('password', result.password)
         } else {
+          this.cookieService.set('userId', ''+result.id, 30)
           this.cookieService.set('email', result.email, 30)
           this.cookieService.set('password', result.password, 30)
         }
@@ -44,9 +46,6 @@ export class LoginboxComponent {
       },
       error: () => {
         this.loginError = true;
-        console.log(this.loginError)
-
-        //this.loginForm.setValue({loginEmail: '', loginPassword: '', loginRememberme: false});
       }
     });
   }
