@@ -16,7 +16,7 @@ export class MessageHolderComponent implements AfterViewInit{
   loadedMessages = 20;
   messagesDb: string[] = Array.from(Array(50).keys()).map(n => n.toString().repeat(100));
 
-  loggedUser: string;
+  loggedUser: number;
 
   @Output() messagesChange: EventEmitter<any> = new EventEmitter();
   @Input() messages: Message[];
@@ -24,7 +24,7 @@ export class MessageHolderComponent implements AfterViewInit{
   constructor(private cookieService: CookieService) {}
 
   ngOnInit() {
-    this.loggedUser = this.cookieService.get("email");
+    this.loggedUser = parseInt(this.cookieService.get("userId"));
   }
 
   ngAfterViewInit() {
@@ -47,9 +47,11 @@ export class MessageHolderComponent implements AfterViewInit{
   }
 
   getClient(message: Message) {
-    /*if (login === this.loggedUser){
-      return true;
-    }*/
+    if (message.user != null) {
+      if (message.user.id === this.loggedUser){
+        return true;
+      }
+    }
     return false;
   }
 
