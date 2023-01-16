@@ -45,6 +45,9 @@ namespace GroupchatAPI.Controllers
             if (loginDto.Password != dbLogin.Password)
                 return BadRequest("Wrong password!");
 
+            if (dbLogin.User.Disabled == true)
+                return NotFound("This user's account was deleted!");
+
             return Ok(dbLogin);
         }
 
@@ -63,6 +66,18 @@ namespace GroupchatAPI.Controllers
 
             if (userDto.Password.Length < 8)
                 return BadRequest("Invalid Password!");
+
+            dbUser = context.Users
+                .FirstOrDefault(u => u.Username == userDto.Username);
+
+            if (dbUser != null)
+                return BadRequest("This username is already being used!");
+
+            var dbLogin = context.Logins
+                .FirstOrDefault(l => l.Email == userDto.Email);
+
+            if (dbLogin != null)
+                return BadRequest("This email is already being used!");
 
             dbUser = new User
             {
@@ -103,11 +118,22 @@ namespace GroupchatAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUser(int id)
+        public async Task<ActionResult> DeleteUser(int id, LoginDto loginDto)
         {
-            var dbUser = await context.Users.FindAsync(id);
+            var dbUser = context.Users
+                .Include(u => u.Login)
+                .FirstOrDefault(u => u.Id == id);
             if (dbUser == null)
                 return NotFound("User not found!");
+
+            var dbLogin = context.Logins
+                .FirstOrDefault(l => l.User.Id == id);
+            if (dbLogin == null)
+                return NotFound("Login not found!");
+
+            if (dbLogin.Email != loginDto.Email
+                || dbLogin.Password != loginDto.Password)
+                return BadRequest("Wrong Credentials!");
 
             dbUser.Disabled = true;
             await context.SaveChangesAsync();
@@ -132,6 +158,9 @@ namespace GroupchatAPI.Controllers
             if (dbLogin.Email != loginDto.Email
                 || dbLogin.Password != loginDto.Password)
                 return BadRequest("Wrong Credentials!");
+
+            if (dbUser.Disabled == true)
+                return NotFound("This user's account was deleted!");
 
             return Ok(dbUser);
         }

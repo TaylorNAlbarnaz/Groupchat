@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Login } from 'src/app/models/login';
 import { LoginDto } from 'src/app/models/loginDto';
+import { UserDto } from 'src/app/models/userDto';
 import { Register } from 'src/app/models/register';
 import { LoginService } from 'src/app/services/login.service';
 
@@ -17,9 +18,15 @@ export class LoginboxComponent {
   loginModel: Login;
   registerModel: Register;
   
+  loginCreateSuccess: boolean = false;
   loginError: boolean = false;
+  loginErrorMessage: string = '';
+  loading: boolean = false;
 
   onSubmitLogin() {
+    this.loading = true;
+    this.loginCreateSuccess = false;
+
     const email = this.loginForm.value.loginEmail as string;
     const password = this.loginForm.value.loginPassword as string;
     const rememberme = this.loginForm.value.loginRememberme as boolean;
@@ -31,6 +38,7 @@ export class LoginboxComponent {
     this.loginService.login(loginDto).subscribe({
       next: (result) => {
         this.loginError = false;
+        this.loading = false;
 
         if (rememberme) {
           this.cookieService.set('userId', ''+result.id)
@@ -44,14 +52,41 @@ export class LoginboxComponent {
 
         this.router.navigate(['/']);
       },
-      error: () => {
+      error: (err) => {
+        this.loginErrorMessage = err.error;
         this.loginError = true;
+        this.loading = false;
       }
     });
   }
 
   onSubmitRegister() {
-    console.warn(this.loginForm.value);
+    this.loading = true;
+
+    const email = this.registerForm.value.registerEmail as string;
+    const password = this.registerForm.value.registerPassword as string;
+    const username = this.registerForm.value.registerUsername as string;
+
+    const userDto = new UserDto();
+    userDto.email = email;
+    userDto.password = password;
+    userDto.username = username;
+
+    this.loginService.register(userDto).subscribe({
+      next: () => {
+        this.loginError = false;
+        this.loading = false;
+
+        this.register = false;
+        this.loginCreateSuccess = true;
+      },
+      error: (err) => {
+        this.loginErrorMessage = err.error;
+        this.loginError = true;
+        this.loading = false;
+      }
+    })
+
   }
 
   passwordMatchingValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {

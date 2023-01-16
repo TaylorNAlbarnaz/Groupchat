@@ -23,7 +23,12 @@ export class LoginService {
     });
   }
 
-  public register(credentials: UserDto): Observable<Login> {
-    return this.http.get<Login>(`${environment.apiUrl}/${this.url}`);
+  public register(credentials: UserDto): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/${this.url}`, {
+      email: credentials.email,
+      password: credentials.password,
+      username: credentials.username
+    },
+    { responseType: 'text' });
   }
 }
