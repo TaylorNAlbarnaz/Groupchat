@@ -1,4 +1,5 @@
 export class MessageDto {
-    username: string;
+    id: number;
+    userId: number;
     content: string;
 }

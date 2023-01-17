@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Message } from 'src/app/models/message';
-import { MessageDto } from 'src/app/models/messageDto';
 
 @Component({
   selector: 'app-message-holder',
@@ -10,16 +9,20 @@ import { MessageDto } from 'src/app/models/messageDto';
 })
 export class MessageHolderComponent implements AfterViewInit{
   shadowRef: Element | null;
-  atBottom = true;
-  atTop = false;
-
-  loadedMessages = 20;
-  messagesDb: string[] = Array.from(Array(50).keys()).map(n => n.toString().repeat(100));
-
+  loading: boolean = false;
+  atBottom: boolean = true;
+  atTop: boolean = false;
+  
   loggedUser: number;
 
   @Output() messagesChange: EventEmitter<any> = new EventEmitter();
   @Input() messages: Message[];
+
+  @Output() messageQntChange: EventEmitter<any> = new EventEmitter();
+  @Input() messageQnt: number = 10;
+
+  @Output() groupMessageQntChange: EventEmitter<any> = new EventEmitter();
+  @Input() groupMessageQnt: number = 10;
 
   constructor(private cookieService: CookieService) {}
 
@@ -36,8 +39,14 @@ export class MessageHolderComponent implements AfterViewInit{
     const scrollTop = this.shadowRef?.scrollTop as number;
     const divHeight = this.shadowRef?.clientHeight as number;
 
-    this.atBottom = (scrollTop > -200);
-    this.atTop = (-(scrollHeight - divHeight) >= scrollTop - 50);
+    this.atBottom = (scrollTop > -20);
+    this.atTop = (-(scrollHeight - divHeight) >= scrollTop - 25);
+
+    if (!this.atTop) {
+      this.loading = false;
+    }
+
+    console.log(this.atBottom, this.atTop);
   }
 
   resetScroll() {
@@ -56,18 +65,9 @@ export class MessageHolderComponent implements AfterViewInit{
   }
 
   loadMoreMessages() {
-    const messagesToAdd: string[] = this.messagesDb.slice(this.loadedMessages, this.loadedMessages + 20);
-    let messageList: Message[] = [];
-
-    for (let i = 0; i < messagesToAdd.length; i ++) {
-      const newMessage = new Message();
-      newMessage.content = messagesToAdd[i];
-
-      messageList = messageList.concat(newMessage);
-    }
-    this.messages = this.messages.concat(messageList);
-
-    this.loadedMessages += messagesToAdd.length;
-    this.atTop = false;
+    console.log(this.messageQnt, this.groupMessageQnt)
+    this.loading = true;
+    this.messageQnt += 10;
+    this.messageQntChange.emit(this.messageQnt);
   }
 }

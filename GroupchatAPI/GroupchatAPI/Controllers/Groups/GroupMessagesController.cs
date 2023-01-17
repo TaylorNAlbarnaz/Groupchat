@@ -17,8 +17,8 @@ namespace GroupchatAPI.Controllers.Groups
             this.context = context;
         }
 
-        [HttpGet("{id}/{qnt}/{offset}")]
-        public async Task<ActionResult<Message>> GetGroupMessages(int id, int qnt, int offset)
+        [HttpGet("{id}/{qnt}")]
+        public async Task<ActionResult<Message>> GetGroupMessages(int id, int qnt)
         {
             if (qnt == 0)
                 return BadRequest("Can't ask for 0 messages!");
@@ -26,7 +26,6 @@ namespace GroupchatAPI.Controllers.Groups
             var dbMessages = await context.Messages
                 .OrderByDescending(m => m.Id)
                 .Include(m => m.User)
-                .Skip(offset)
                 .Take(qnt)
                 .Where(m => m.GroupId == id)
                 .ToListAsync();
@@ -35,6 +34,16 @@ namespace GroupchatAPI.Controllers.Groups
                 return NotFound("Group messages not found!");
 
             return Ok(dbMessages);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Message>> GetGroupMessageQnt(int id)
+        {
+            var dbMessageQnt = context.Messages
+                .Select(m => m.GroupId == id)
+                .Count();
+
+            return Ok(dbMessageQnt - 1);
         }
 
         [HttpPost("{id}")]
@@ -59,7 +68,17 @@ namespace GroupchatAPI.Controllers.Groups
             var dbGroupUser = context.GroupUsers
                 .FirstOrDefault(gu => gu.GroupId == id && gu.UserId == messageDto.UserId);
             if (dbGroupUser == null)
-                return BadRequest("User is not part of this group!");
+            {
+                dbGroupUser = new GroupUser()
+                {
+                    User = dbUser,
+                    UserId = dbUser.Id,
+                    Group = dbGroup,
+                    GroupId = dbGroup.Id
+                };
+
+                context.GroupUsers.Add(dbGroupUser);
+            }
 
             var message = new Message
             {

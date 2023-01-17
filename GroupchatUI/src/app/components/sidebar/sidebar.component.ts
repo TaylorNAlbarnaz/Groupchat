@@ -15,6 +15,12 @@ export class SidebarComponent {
   @Output() messagesChange: EventEmitter<any> = new EventEmitter();
   @Input() messages: Message[];
 
+  @Output() messageQntChange: EventEmitter<any> = new EventEmitter();
+  @Input() messageQnt: number = 10;
+
+  @Output() groupMessageQntChange: EventEmitter<any> = new EventEmitter();
+  @Input() groupMessageQnt: number = 10;
+
   @Output() groupsChange: EventEmitter<any> = new EventEmitter();
   @Input() groups: GroupDto[] = [];
 
@@ -51,10 +57,11 @@ export class SidebarComponent {
     if (this.groups[this.currentGroup]) {
       const groupId = this.groups[this.currentGroup].id;
 
-      this.messageService.getMessages(groupId).subscribe((result: Message[]) => {
-        this.messages = result;
-        this.messagesChange.emit(this.messages);
-        console.log(this.messages)
+      this.messageService.getMessageQnt(this.currentGroupId).subscribe({
+        next: (res) => {
+          this.groupMessageQnt = parseInt(res);
+          this.groupMessageQntChange.emit(this.groupMessageQnt);
+        }
       });
 
       this.currentGroupId = groupId;
