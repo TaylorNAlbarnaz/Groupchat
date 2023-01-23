@@ -34,4 +34,8 @@ export class UserService {
     },
     { responseType: 'text' })
   }
+
+  public deleteUser(id: number, loginDto: LoginDto): Observable<any> {
+    return this.http.delete<User>(`${environment.apiUrl}/${this.url}/${id}/${loginDto.email}/${loginDto.password}`);
+  }
 }

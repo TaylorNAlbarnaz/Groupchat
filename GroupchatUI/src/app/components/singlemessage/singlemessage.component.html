@@ -1,6 +1,7 @@
 <div class="flex flex-col text-white max-w-m w-fit gap-1"
     [ngClass]="{'ml-auto text-left items-end': client}">
-    <div class="flex flex-row text-xs gap-3">
+    <div class="flex flex-row text-xs gap-3"
+    [ngClass]="{'text-gray-400':name == 'Deleted'}">
         <span>{{ name }}</span>
     </div>
     <div class="bg-gray-900 rounded-b-2xl p-2 w-fit max-w-full"

@@ -69,6 +69,21 @@ export class SettingsModalComponent {
     this.router.navigate(['/auth']);
   }
 
+  deleteUser() {
+    const id: number = parseInt(this.cookieService.get('userId'));
+
+    const login = new LoginDto();
+    login.email = this.cookieService.get("email");
+    login.password = this.cookieService.get("password");
+
+    this.userService.deleteUser(id, login).subscribe({
+      next: () => this.logoff(),
+      error: () => {
+        this.screen = 6;
+      }
+    })
+  }
+
   onChangeCredentials(type: number) {
     const id: number = parseInt(this.cookieService.get('userId'));
     let user: User = new User();

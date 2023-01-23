@@ -117,8 +117,8 @@ namespace GroupchatAPI.Controllers
             return Ok($"User {dbUser.Username} successfully updated!");
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUser(int id, LoginDto loginDto)
+        [HttpDelete("{id}/{email}/{password}")]
+        public async Task<ActionResult> DeleteUser(int id, string email, string password)
         {
             var dbUser = context.Users
                 .Include(u => u.Login)
@@ -131,8 +131,8 @@ namespace GroupchatAPI.Controllers
             if (dbLogin == null)
                 return NotFound("Login not found!");
 
-            if (dbLogin.Email != loginDto.Email
-                || dbLogin.Password != loginDto.Password)
+            if (dbLogin.Email != email
+                || dbLogin.Password != password)
                 return BadRequest("Wrong Credentials!");
 
             dbUser.Disabled = true;
