@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 import { GroupDto } from 'src/app/models/groupDto';
 import { Message } from 'src/app/models/message';
 import { MessageService } from 'src/app/services/message.service';
@@ -34,6 +35,12 @@ export class SidebarComponent {
   displayTag = false;
   currentTag = "Tag";
   currentTagY = "200px";
+
+  userId = 0;
+
+  ngOnInit() {
+    this.userId = parseInt(this.cookieService.get('userId'));
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['messages']) {
@@ -75,5 +82,5 @@ export class SidebarComponent {
     }
   }
 
-  constructor(private messageService: MessageService) {}
+  constructor(private messageService: MessageService, private cookieService: CookieService) {}
 }

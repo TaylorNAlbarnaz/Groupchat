@@ -106,12 +106,22 @@ namespace GroupchatAPI.Controllers.Groups
             return Ok($"Group {dbGroup.Name} succesfully updated!");
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Group>> DeleteGroup(int id)
+        [HttpDelete("{id}/{email}/{password}")]
+        public async Task<ActionResult<Group>> DeleteGroup(int id, string email, string password)
         {
             var dbGroup = await context.Groups.FindAsync(id);
             if (dbGroup == null)
                 return BadRequest("Group not found!");
+
+            var dbLogin = context.Logins
+                .Include(l => l.User)
+                .FirstOrDefault(l => l.User.Id == dbGroup.AdminId);
+            if (dbLogin == null)
+                return NotFound("Admin for this group not found!");
+
+            if (dbLogin.Email != email
+                || dbLogin.Password != password)
+                return BadRequest("Wrong Credentials!");
 
             repository.DeleteGroup(dbGroup);
             await context.SaveChangesAsync();

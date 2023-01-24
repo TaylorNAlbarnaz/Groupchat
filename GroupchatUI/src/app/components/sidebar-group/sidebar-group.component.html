@@ -1,13 +1,15 @@
 <li class="tag-holder group relative inline-flex h-100 w-32 items-center justify-center cursor-pointer hover:bg-gray-800 py-2">
     <div class="inline-flex justify-center items-center text-white border hover:text-gray-300 h-16 w-16 md:h-10 md:w-10
         rounded-full bg-gray-700 hover:bg-gray-800 hover:border-2 border-gray-300">
-        M
+        {{ groupName.at(0) }}
     </div>
-
-    <span class="hidden tag">
-        Settings
-    </span>
 
     <div class="h-16 w-1 left-4 md:h-10 md:w-0.5 md:left-8 bg-white absolute rounded-tr rounded-br"
         *ngIf="selected"></div>
+
+    <div class="w-3.5 h-3.5 left-20 -translate-x-1.5 top-2 absolute bg-red-400 rounded hover:bg-red-300"
+        *ngIf="isAdmin && selected"
+        (click)="deleteGroup()">
+        <ion-icon class="text-white -translate-x-px -translate-y-0.5" name="close-outline"></ion-icon>
+    </div>
 </li>

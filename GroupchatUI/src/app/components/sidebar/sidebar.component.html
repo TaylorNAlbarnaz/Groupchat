@@ -17,6 +17,9 @@
                 (mouseleave)="displayTag=false"
                 (click)="changeGroup(i)"
                 [selected]="currentGroup === i"
+                [groupId]="group.id"
+                [groupName]="group.name"
+                [isAdmin]="(userId === group.adminId)"
             ></app-sidebar-group>
         </nav>
     </div>
