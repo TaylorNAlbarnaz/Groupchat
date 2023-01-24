@@ -12,6 +12,7 @@ export class SidebarGroupComponent {
   @Input() groupName = "Group";
   @Input() selected = false;
   @Input() isAdmin = false;
+  @Input() creatable = false;
 
   deleteGroup() {
     const login = new LoginDto();
@@ -19,8 +20,12 @@ export class SidebarGroupComponent {
     login.password = this.cookieService.get("password");
 
     this.groupService.deleteGroup(this.groupId, login).subscribe({
-      complete: () => window.location.reload()
+      error: () => this.reloadPage()
     })
+  }
+
+  reloadPage() {
+    window.location.reload();
   }
 
   constructor (private groupService: GroupService, private cookieService: CookieService) { }

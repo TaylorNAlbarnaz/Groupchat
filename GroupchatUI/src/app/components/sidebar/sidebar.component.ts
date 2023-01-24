@@ -11,6 +11,7 @@ import { MessageService } from 'src/app/services/message.service';
 })
 export class SidebarComponent {
   @Output("openSettings") openSettings: EventEmitter<any> = new EventEmitter();
+  @Output("createGroup") createGroup: EventEmitter<any> = new EventEmitter();
   @Input() target: number;
 
   @Output() messagesChange: EventEmitter<any> = new EventEmitter();

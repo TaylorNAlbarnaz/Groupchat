@@ -21,6 +21,11 @@
                 [groupName]="group.name"
                 [isAdmin]="(userId === group.adminId)"
             ></app-sidebar-group>
+
+            <app-sidebar-group
+                [creatable]="true"
+                (click)="createGroup.emit()"
+            ></app-sidebar-group>
         </nav>
     </div>
 

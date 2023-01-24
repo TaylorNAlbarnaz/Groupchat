@@ -16,6 +16,7 @@ import { MessageService } from 'src/app/services/message.service';
 })
 export class IndexComponent {
   settings: boolean = false;
+  groupCreation: boolean = false;
 
   @Output() messagesChange: EventEmitter<any> = new EventEmitter();
   messages: Message[];
@@ -43,6 +44,10 @@ export class IndexComponent {
 
   openSettings() {
     this.settings = true;
+  }
+
+  createGroup() {
+    this.groupCreation = true;
   }
 
   ngOnInit() {

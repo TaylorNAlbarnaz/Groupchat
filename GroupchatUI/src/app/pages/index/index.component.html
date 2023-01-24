@@ -2,7 +2,7 @@
     <div class="flex h-full w-full">
         <app-sidebar class="inline-block absolute md:relative" [(messages)]="messages" [(groups)]="groups"
             [(currentGroupId)]="currentGroupId" [(messageQnt)]="messageQnt" [(groupMessageQnt)]="groupMessageQnt"
-            (openSettings)="openSettings()"></app-sidebar>
+            (openSettings)="openSettings()" (createGroup)="createGroup()"></app-sidebar>
         <div class="flex flex-col h-full message-content">
             <app-message-holder class="inline-block w-full" [(messages)]="messages" [(messageQnt)]="messageQnt"
                 [(groupMessageQnt)]="groupMessageQnt"></app-message-holder>
@@ -13,5 +13,6 @@
 
     <div>
         <app-settings-modal [(show)]="settings" [(loggedUser)]="loggedUser"></app-settings-modal>
+        <app-group-modal [(show)]="groupCreation"></app-group-modal>
     </div>
 </div>

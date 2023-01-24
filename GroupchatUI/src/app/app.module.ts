@@ -17,6 +17,7 @@ import { IndexComponent } from './pages/index/index.component';
 import { AuthComponent } from './pages/auth/auth.component';
 import { LoginboxComponent } from './components/loginbox/loginbox.component';
 import { SettingsModalComponent } from './components/settings-modal/settings-modal.component';
+import { GroupModalComponent } from './components/group-modal/group-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { SettingsModalComponent } from './components/settings-modal/settings-mod
     IndexComponent,
     AuthComponent,
     LoginboxComponent,
-    SettingsModalComponent
+    SettingsModalComponent,
+    GroupModalComponent
   ],
   imports: [
     BrowserModule,
