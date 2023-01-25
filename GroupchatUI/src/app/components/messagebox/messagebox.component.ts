@@ -3,14 +3,12 @@ import { CookieService } from 'ngx-cookie-service';
 import { LoginDto } from 'src/app/models/loginDto';
 import { Message } from 'src/app/models/message';
 import { MessageDto } from 'src/app/models/messageDto';
-import { User } from 'src/app/models/user';
 import { MessageService } from 'src/app/services/message.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-messagebox',
-  templateUrl: './messagebox.component.html',
-  styleUrls: ['./messagebox.component.css']
+  templateUrl: './messagebox.component.html'
 })
 export class MessageboxComponent {
   @Output() messagesChange: EventEmitter<any> = new EventEmitter();

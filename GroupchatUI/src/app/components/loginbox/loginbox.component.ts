@@ -10,8 +10,7 @@ import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-loginbox',
-  templateUrl: './loginbox.component.html',
-  styleUrls: ['./loginbox.component.css']
+  templateUrl: './loginbox.component.html'
 })
 export class LoginboxComponent {
   @Input() register: boolean = true;

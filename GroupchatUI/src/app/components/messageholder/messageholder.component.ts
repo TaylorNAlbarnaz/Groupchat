@@ -4,8 +4,7 @@ import { Message } from 'src/app/models/message';
 
 @Component({
   selector: 'app-message-holder',
-  templateUrl: './messageholder.component.html',
-  styleUrls: ['./messageholder.component.css']
+  templateUrl: './messageholder.component.html'
 })
 export class MessageHolderComponent implements AfterViewInit{
   shadowRef: Element | null;

@@ -9,8 +9,7 @@ import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-settings-modal',
-  templateUrl: './settings-modal.component.html',
-  styleUrls: ['./settings-modal.component.css']
+  templateUrl: './settings-modal.component.html'
 })
 export class SettingsModalComponent {
   @Output() showChange: EventEmitter<any> = new EventEmitter();

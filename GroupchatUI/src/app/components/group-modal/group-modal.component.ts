@@ -7,8 +7,7 @@ import { GroupService } from 'src/app/services/group.service';
 
 @Component({
   selector: 'app-group-modal',
-  templateUrl: './group-modal.component.html',
-  styleUrls: ['./group-modal.component.css']
+  templateUrl: './group-modal.component.html'
 })
 export class GroupModalComponent {
   @Output() showChange: EventEmitter<any> = new EventEmitter();
